@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/applicant.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=applicant&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Applicant</div></div>
+        <nav>
+            <a href="?role=applicant&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=applicant&page=find-jobs" class="nav-item"><span class="icon">🔍</span><span>Find Jobs</span></a>
+            <a href="?role=applicant&page=saved-jobs" class="nav-item"><span class="icon">❤️</span><span>Saved Jobs</span></a>
+            <a href="?role=applicant&page=applications" class="nav-item"><span class="icon">📋</span><span>My Applications</span></a>
+            <a href="?role=applicant&page=resume" class="nav-item"><span class="icon">📄</span><span>Resume</span></a>
+            <a href="?role=applicant&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
+            <a href="?role=applicant&page=edit-profile" class="nav-item active"><span class="icon">✏️</span><span>Edit Profile</span></a>
+            <a href="?role=applicant&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Edit Profile</div>
+        <div class="page-sub">Keep your profile up-to-date to attract the best opportunities.</div>
+        {{notification}}
+        <form class="dash-form" method="POST" action="?role=applicant&page=edit-profile">
+            <input type="hidden" name="btn_update" value="1">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;margin-top:16px;">
+                <h3 style="margin:0 0 12px;">Personal Information</h3>
+                <div class="form-row">
+                    <div><label>Full Name</label><input type="text" name="full_name" value="{{name}}"></div>
+                    <div><label>Email Address</label><input type="email" name="email" value="{{email}}"></div>
+                </div>
+                <div class="form-row">
+                    <div><label>Phone Number</label><input type="tel" name="phone" value="{{phone}}"></div>
+                    <div><label>Address / Location</label><input type="text" name="location" value="{{location}}"></div>
+                </div>
+                <div class="form-row">
+                    <div><label>Professional Title</label><input type="text" name="title" value="{{title}}" placeholder="e.g. Junior Web Developer"></div>
+                    <div><label>Gender</label>
+                        <select name="gender">
+                            <option value="" {{gender_none}}>Select</option>
+                            <option value="Female" {{gender_female}}>Female</option>
+                            <option value="Male" {{gender_male}}>Male</option>
+                            <option value="Other" {{gender_other}}>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <h3 style="margin:16px 0 12px;">Career Objective</h3>
+                <label>Professional Summary</label>
+                <textarea name="summary" rows="3">{{about}}</textarea>
+                <h3 style="margin:16px 0 12px;">Education</h3>
+                <input type="text" name="education" value="{{education}}">
+                <h3 style="margin:16px 0 12px;">Work Experience</h3>
+                <textarea name="experience" rows="4">{{experience}}</textarea>
+                <h3 style="margin:16px 0 12px;">Skills</h3>
+                <input type="text" name="skills" value="{{skills}}">
+                <h3 style="margin:16px 0 12px;">Certifications</h3>
+                <textarea name="certifications" rows="3">{{certifications}}</textarea>
+                <h3 style="margin:16px 0 12px;">Languages</h3>
+                <input type="text" name="languages" value="{{languages}}">
+                <div style="display:flex;gap:12px;margin-top:16px;">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="?role=applicant&page=profile" class="btn btn-outline">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/applicant.js"></script>
+</body>
+</html>

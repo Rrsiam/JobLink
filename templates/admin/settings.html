@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/admin.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <nav>
+            <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
+            <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
+            <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
+            <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
+            <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
+            <a href="?role=admin&page=settings" class="nav-item active"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Admin Settings</div>
+        <div class="page-sub">Manage your account and system configuration</div>
+        {{notification}}
+        <form class="dash-form" method="POST" action="?role=admin&page=settings">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3>Profile Information</h3>
+                <div class="form-row">
+                    <div><label>Full Name</label><input type="text" value="{{name}}"></div>
+                    <div><label>Phone Number</label><input type="tel" value="{{phone}}"></div>
+                </div>
+                <div><label>Role</label><input type="text" value="Super Administrator" disabled></div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3>Change Password</h3>
+                <input type="password" name="current_password" placeholder="Current Password *">
+                <input type="password" name="new_password" placeholder="New Password">
+                <input type="password" name="confirm_password" placeholder="Confirm New Password">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3>System Settings</h3>
+                <label>Site Name</label>
+                <input type="text" value="JobLink Portal">
+                <label>Contact Email</label>
+                <input type="email" value="support@joblink.com">
+                <label>Max Resume File Size (MB)</label>
+                <input type="number" value="5">
+                <div style="margin:12px 0;">
+                    <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:0;">
+                        <input type="checkbox" checked> Require Employer Approval
+                    </label>
+                    <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;">
+                        <input type="checkbox"> Maintenance Mode
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+            <div class="danger-zone">
+                <h4>Admin Account</h4>
+                <p>Admin accounts are protected and cannot be deleted through the application. They can only be removed directly at the database level.</p>
+            </div>
+        </form>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/admin.js"></script>
+</body>
+</html>

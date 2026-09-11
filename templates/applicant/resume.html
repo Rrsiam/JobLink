@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/applicant.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=applicant&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Applicant</div></div>
+        <nav>
+            <a href="?role=applicant&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=applicant&page=find-jobs" class="nav-item"><span class="icon">🔍</span><span>Find Jobs</span></a>
+            <a href="?role=applicant&page=saved-jobs" class="nav-item"><span class="icon">❤️</span><span>Saved Jobs</span></a>
+            <a href="?role=applicant&page=applications" class="nav-item"><span class="icon">📋</span><span>My Applications</span></a>
+            <a href="?role=applicant&page=resume" class="nav-item active"><span class="icon">📄</span><span>Resume</span></a>
+            <a href="?role=applicant&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
+            <a href="?role=applicant&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Resume</div>
+        <div class="page-sub">Upload and manage your resume — recruiters will see this when you apply</div>
+        {{notification}}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
+                <h3>Upload Resume</h3>
+                <form method="POST" action="?role=applicant&page=resume" enctype="multipart/form-data">
+                    <div style="border:2px dashed #e2e8f0;border-radius:8px;padding:40px;text-align:center;margin:16px 0;">
+                        <div style="font-size:48px;margin-bottom:8px;">📄</div>
+                        <p><strong>Drop your resume here</strong></p>
+                        <p class="text-muted" style="font-size:13px;">PDF, DOC, DOCX — Max 5 MB</p>
+                        <input type="file" id="resume-upload" name="resume" accept=".pdf,.doc,.docx" style="margin:12px auto;display:block;">
+                        <div class="text-muted" style="font-size:13px;margin:8px 0;" id="file-name">{{file_hint}}</div>
+                        <button type="submit" class="btn btn-primary">Upload Resume</button>
+                    </div>
+                </form>
+                <p class="text-muted" style="font-size:13px;">Upload a resume to get your score</p>
+                <div style="background:#f8fafc;padding:12px;border-radius:8px;margin-top:16px;display:{{current_show}};">
+                    <strong>Current Resume</strong><br>
+                    <span class="text-muted">{{current_resume}}</span>
+                </div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
+                <h3>Resume Tips</h3>
+                <ul style="padding-left:20px;color:#334155;margin:12px 0;">
+                    <li>Keep your resume to 1–2 pages for most roles</li>
+                    <li>Use keywords from job descriptions to pass ATS filters</li>
+                    <li>Quantify achievements (e.g. "increased revenue by 30%")</li>
+                    <li>Use a clean, single-column layout for ATS compatibility</li>
+                    <li>Include a professional summary at the top</li>
+                    <li>List experience in reverse-chronological order</li>
+                </ul>
+                <div style="background:#f8fafc;padding:12px;border-radius:8px;margin-top:12px;">
+                    <strong>Accepted Formats</strong><br>
+                    <span class="text-muted">PDF, DOC, DOCX · Max 5 MB · English preferred</span>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/applicant.js"></script>
+</body>
+</html>

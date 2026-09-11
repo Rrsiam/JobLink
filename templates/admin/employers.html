@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Employers – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/admin.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <nav>
+            <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
+            <a href="?role=admin&page=employers" class="nav-item active"><span class="icon">🏢</span><span>Employers</span></a>
+            <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
+            <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
+            <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
+            <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Manage Employers</div>
+        <div class="page-sub">{{total_employers}} registered employers</div>
+        <div style="margin-bottom:16px;">
+            <input type="text" placeholder="Search company, owner or email..." style="width:100%;max-width:400px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;">
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Company</th><th>Owner</th><th>Email</th><th>Industry</th><th>Registered</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>{{employer_rows}}</tbody>
+            </table>
+        </div>
+        <div class="text-muted">Showing {{showing}} of {{total_employers}}</div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/admin.js"></script>
+</body>
+</html>

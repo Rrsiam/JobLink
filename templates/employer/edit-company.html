@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Company – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/employer.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=employer&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{company_name}}</div><div class="role">Employer</div></div>
+        <nav>
+            <a href="?role=employer&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=employer&page=company-profile" class="nav-item"><span class="icon">🏢</span><span>Company Profile</span></a>
+            <a href="?role=employer&page=edit-company" class="nav-item active"><span class="icon">✏️</span><span>Edit Company</span></a>
+            <a href="?role=employer&page=post-job" class="nav-item"><span class="icon">➕</span><span>Post a Job</span></a>
+            <a href="?role=employer&page=manage-jobs" class="nav-item"><span class="icon">📋</span><span>Manage Jobs</span></a>
+            <a href="?role=employer&page=applicants" class="nav-item"><span class="icon">👥</span><span>Applications</span></a>
+            <a href="?role=employer&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Edit Company Profile</div>
+        <div class="page-sub">Update your company information and public profile</div>
+        <form class="dash-form" method="POST" action="?role=employer&page=edit-company" enctype="multipart/form-data">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
+                <label>Upload Logo</label>
+                <div id="edit-logo-zone" style="border:2px dashed #e2e8f0;border-radius:8px;padding:20px;text-align:center;margin-bottom:16px;cursor:pointer;">
+                    Click to upload or drag and drop<br>
+                    <span class="text-muted" style="font-size:12px;">PNG, JPG or SVG. Max 2MB. Recommended: 256×256px</span>
+                    <input type="file" id="edit_logo" name="logo" style="display:none;" accept="image/png,image/jpeg,image/svg+xml">
+                </div>
+                <p id="edit-logo-filename" class="text-muted" style="font-size:12px;"></p>
+                <h3 style="margin:16px 0 12px;">Basic Information</h3>
+                <div class="form-row">
+                    <div><label>Company Name</label><input type="text" name="company_name" value="{{company_name}}"></div>
+                    <div><label>Tagline</label><input type="text" name="tagline" value="{{tagline}}"></div>
+                </div>
+                <div class="form-row">
+                    <div><label>Industry</label><input type="text" name="industry" value="{{industry}}"></div>
+                    <div><label>Company Size</label><input type="text" name="size" value="{{size}}"></div>
+                </div>
+                <div style="max-width:calc(50% - 6px);">
+                    <label>Headquarters Location</label><input type="text" name="location" value="{{location}}">
+                </div>
+                <h3 style="margin:16px 0 12px;">Contact Information</h3>
+                <div class="form-row">
+                    <div><label>Website</label><input type="url" name="website" value="{{website}}"></div>
+                    <div><label>Phone Number</label><input type="tel" name="phone" value="{{phone}}"></div>
+                </div>
+                <label>HR Email</label>
+                <input type="email" name="email" value="{{email}}">
+                <h3 style="margin:16px 0 12px;">About the Company</h3>
+                <label>Company Description</label>
+                <textarea name="about" rows="4">{{about}}</textarea>
+                <label>Benefits &amp; Perks (one per line)</label>
+                <textarea name="benefits" rows="4">{{benefits_raw}}</textarea>
+                <div style="display:flex;gap:12px;margin-top:16px;">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="?role=employer&page=company-profile" class="btn btn-outline">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+    <script src="public/js/employer.js?v=2"></script>
+    <script>
+    (function(){
+        var zone = document.getElementById('edit-logo-zone');
+        var inp  = document.getElementById('edit_logo');
+        var lbl  = document.getElementById('edit-logo-filename');
+        if (zone && inp) {
+            zone.addEventListener('click', function(){ inp.click(); });
+            inp.addEventListener('change', function(){
+                if (lbl) lbl.textContent = inp.files[0] ? 'Selected: ' + inp.files[0].name : '';
+            });
+        }
+    })();
+    </script>
+</body>
+</html>

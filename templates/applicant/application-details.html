@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Details – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/applicant.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=applicant&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Applicant</div></div>
+        <nav>
+            <a href="?role=applicant&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=applicant&page=find-jobs" class="nav-item"><span class="icon">🔍</span><span>Find Jobs</span></a>
+            <a href="?role=applicant&page=saved-jobs" class="nav-item"><span class="icon">❤️</span><span>Saved Jobs</span></a>
+            <a href="?role=applicant&page=applications" class="nav-item"><span class="icon">📋</span><span>My Applications</span></a>
+            <a href="?role=applicant&page=resume" class="nav-item"><span class="icon">📄</span><span>Resume</span></a>
+            <a href="?role=applicant&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
+            <a href="?role=applicant&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">{{job_title}}</div>
+        <div class="page-sub"><a href="?role=applicant&page=applications">← Back to My Applications</a></div>
+        {{notification}}
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                    <strong style="font-size:20px;">{{job_title}}</strong><br>
+                    {{company}} · {{location}} · {{salary}} · {{job_type}}
+                </div>
+                <div>
+                    <span class="badge badge-{{status_class}}">{{status}}</span><br>
+                    <span class="text-muted">Applied {{applied_date}} · Deadline {{deadline}}</span>
+                </div>
+            </div>
+            <hr style="margin:16px 0;border-color:#e2e8f0;">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <a href="{{job_link}}" class="btn btn-outline btn-sm">View Job Listing</a>
+                {{resume_button}}
+                <a href="{{withdraw_link}}" class="btn btn-danger btn-sm" onclick="return confirm('Withdraw this application? This cannot be undone.')">Withdraw Application</a>
+            </div>
+            <h3 style="margin:16px 0 8px;">Application Timeline</h3>
+            <div style="border-left:2px solid #2563eb;padding-left:16px;">
+                <div><strong>Applied</strong> — Application submitted successfully.<br><span class="text-muted">{{applied_date}}</span></div>
+                <div style="margin-top:12px;"><strong>Under Review</strong> — Recruiter acknowledged your application.<br><span class="text-muted">{{under_review_date}}</span></div>
+                <div style="margin-top:12px;"><strong>Shortlisted</strong> — You have been shortlisted for further review.<br><span class="text-muted">{{shortlisted_date}}</span></div>
+                <div style="margin-top:12px;color:#94a3b8;"><strong>Interview</strong> — Pending</div>
+                <div style="margin-top:12px;color:#94a3b8;"><strong>Decision</strong> — Pending</div>
+            </div>
+            <h3 style="margin:16px 0 8px;">Submitted Resume</h3>
+            <p>{{resume_file}} · PDF · Submitted {{applied_date}}</p>
+            <h3 style="margin:16px 0 8px;">Applicant Information</h3>
+            <p><strong>Name:</strong> {{name}}<br><strong>Email:</strong> {{email}}<br><strong>Phone:</strong> {{phone}}<br><strong>Location:</strong> {{location}}</p>
+            <h3 style="margin:16px 0 8px;">Cover Letter</h3>
+            <div style="background:#f8fafc;padding:12px;border-radius:8px;">
+                {{cover_letter}}
+            </div>
+            <h3 style="margin:16px 0 8px;">Personal Notes</h3>
+            <div style="background:#fef3c7;padding:12px;border-radius:8px;">
+                {{notes}}
+            </div>
+        </div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/applicant.js"></script>
+</body>
+</html>

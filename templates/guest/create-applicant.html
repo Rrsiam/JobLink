@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Applicant Account – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/guest.css">
+</head>
+<body>
+    <header class="guest-header">
+        <div class="container">
+            <a href="?page=home" class="logo">Job<span>Link</span></a>
+            <nav class="nav-links">
+                <a href="?page=find-jobs">Find Jobs</a>
+                <a href="?page=companies">Companies</a>
+                <a href="?page=about">About</a>
+                <a href="?page=sign-in" class="btn btn-outline btn-sm">Log In</a>
+                <a href="?page=sign-up" class="btn btn-primary btn-sm">Register</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="auth-wrapper" style="min-height:auto;padding:20px 16px;">
+            <div class="auth-card" style="max-width:560px;">
+                <h2>Create Applicant Account</h2>
+                <p class="sub">Already have an account? <a href="?page=sign-in">Sign in</a></p>
+                <hr style="margin:16px 0;border-color:#e2e8f0;">
+                {{error}}
+                <form method="POST" action="?page=create-applicant">
+                    <h3 style="font-size:16px;margin-bottom:12px;">Personal Information</h3>
+                    <label>Full Name</label>
+                    <input type="text" name="full_name" placeholder="Maria Santos" required>
+                    <label>Email Address</label>
+                    <input type="email" name="email" placeholder="maria@example.com" required>
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" placeholder="+1 (555) 000-0000">
+                    <label>Home Address</label>
+                    <input type="text" name="address" placeholder="123 Main Street, City, State, ZIP">
+                    <h3 style="font-size:16px;margin:16px 0 12px;">Education &amp; Experience</h3>
+                    <label>Highest Education</label>
+                    <input type="text" name="education" placeholder="e.g. Bachelor's Degree">
+                    <label>Years of Experience</label>
+                    <input type="number" name="experience" placeholder="0">
+                    <label>Skills</label>
+                    <textarea name="skills" rows="2" placeholder="e.g. JavaScript, Python, Project Management, Graphic Design..."></textarea>
+                    <p class="text-muted" style="font-size:12px;">Separate skills with commas. Be specific — recruiters search by skill keywords.</p>
+                    <h3 style="font-size:16px;margin:16px 0 12px;">Account Security</h3>
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Create a strong password" required>
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" placeholder="Re-enter your password" required>
+                    <div style="margin:12px 0;">
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:13px;margin:0;">
+                            <input type="checkbox" name="agree" required> I agree to JobLink's Terms of Service and Privacy Policy.
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Applicant Account</button>
+                </form>
+                <div class="footer-link">Want to hire instead? <a href="?page=create-employer">Create an Employer Account</a></div>
+            </div>
+        </div>
+    </main>
+    <footer class="guest-footer">
+        <div class="container">
+            <div><h4>JobLink</h4><p style="font-size:13px;color:#94a3b8;">Connecting local talent with local opportunity.</p></div>
+            <div><h4>For Job Seekers</h4><a href="#">Browse Jobs</a><a href="#">Create Resume</a><a href="#">Career Advice</a></div>
+            <div><h4>For Employers</h4><a href="#">Post a Job</a><a href="#">Search Candidates</a><a href="#">Pricing</a></div>
+            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="#">Blog</a><a href="#">Contact</a></div>
+            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+        </div>
+    </footer>
+    <script src="public/js/global.js"></script>
+    <script src="public/js/guest.js?v=2"></script>
+</body>
+</html>

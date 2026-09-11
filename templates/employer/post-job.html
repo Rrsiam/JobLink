@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/employer.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=employer&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{company_name}}</div><div class="role">Employer</div></div>
+        <nav>
+            <a href="?role=employer&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=employer&page=company-profile" class="nav-item"><span class="icon">🏢</span><span>Company Profile</span></a>
+            <a href="?role=employer&page=post-job" class="nav-item active"><span class="icon">➕</span><span>Post a Job</span></a>
+            <a href="?role=employer&page=manage-jobs" class="nav-item"><span class="icon">📋</span><span>Manage Jobs</span></a>
+            <a href="?role=employer&page=applicants" class="nav-item"><span class="icon">👥</span><span>Applications</span></a>
+            <a href="?role=employer&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Post a Job</div>
+        <div class="page-sub">Fill in the details below to attract the best candidates.</div>
+        <form class="dash-form" method="POST" action="?role=employer&page=post-job">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
+                <h3>Basic Information</h3>
+                <div class="form-row">
+                    <div><label>Job Title</label><input type="text" name="job_title" placeholder="e.g. Senior Frontend Developer" required></div>
+                    <div><label>Category</label><select name="category">{{category_options}}</select></div>
+                </div>
+                <div class="form-row">
+                    <div><label>Number of Vacancies</label><input type="number" name="vacancies" placeholder="e.g. 3"></div>
+                    <div><label>Location</label><input type="text" name="location" placeholder="e.g. Makati City, Metro Manila"></div>
+                </div>
+                <h3 style="margin:16px 0 12px;">Compensation &amp; Requirements</h3>
+                <div class="form-row">
+                    <div><label>Salary Range (PHP / month)</label><input type="text" name="salary" placeholder="Minimum to Maximum"></div>
+                    <div><label>Minimum Education (optional)</label><input type="text" name="education" placeholder="e.g. Bachelor's Degree"></div>
+                </div>
+                <div class="form-row">
+                    <div><label>Experience Level</label>
+                        <select name="experience"><option>Entry-level</option><option>Mid-level</option><option>Senior</option><option>Executive</option></select>
+                    </div>
+                    <div><label>Required Skills (optional)</label>
+                        <input type="text" name="skills" placeholder="React, TypeScript, Node.js">
+                    </div>
+                </div>
+                <h3 style="margin:16px 0 12px;">Job Details</h3>
+                <label>Job Description</label>
+                <textarea name="description" rows="4" placeholder="Describe the role, team, and what makes this opportunity exciting..."></textarea>
+                <label>Responsibilities</label>
+                <textarea name="responsibilities" rows="3" placeholder="Lead the frontend development team..."></textarea>
+                <label>Benefits &amp; Perks (optional)</label>
+                <textarea name="benefits" rows="3" placeholder="Competitive salary, Health insurance (HMO)..."></textarea>
+                <h3 style="margin:16px 0 12px;">Application Settings</h3>
+                <label>Application Deadline</label>
+                <input type="date" name="deadline">
+                <div style="display:flex;gap:12px;margin-top:16px;">
+                    <button type="submit" class="btn btn-outline">Save Draft</button>
+                    <button type="submit" class="btn btn-primary" id="publish-job">Publish Job</button>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/employer.js?v=3"></script>
+</body>
+</html>

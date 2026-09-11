@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Employer Account – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/guest.css">
+</head>
+<body>
+    <header class="guest-header">
+        <div class="container">
+            <a href="?page=home" class="logo">Job<span>Link</span></a>
+            <nav class="nav-links">
+                <a href="?page=find-jobs">Find Jobs</a>
+                <a href="?page=companies">Companies</a>
+                <a href="?page=about">About</a>
+                <a href="?page=sign-in" class="btn btn-outline btn-sm">Log In</a>
+                <a href="?page=sign-up" class="btn btn-primary btn-sm">Register</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="auth-wrapper" style="min-height:auto;padding:20px 16px;">
+            <div class="auth-card" style="max-width:560px;">
+                <h2>Create Employer Account</h2>
+                <p class="sub">Already registered? <a href="?page=sign-in">Sign in</a></p>
+                <hr style="margin:16px 0;border-color:#e2e8f0;">
+                {{error}}
+                <form method="POST" action="?page=create-employer" enctype="multipart/form-data">
+                    <h3 style="font-size:16px;margin-bottom:12px;">Employer Details</h3>
+                    <label>Your Full Name</label>
+                    <input type="text" name="full_name" placeholder="Alex Reyes" required>
+                    <label>Company Name</label>
+                    <input type="text" name="company_name" placeholder="Acme Corporation" required>
+                    <label>Work Email</label>
+                    <input type="email" name="email" placeholder="alex@acmecorp.com" required>
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" placeholder="+1 (555) 000-0000">
+                    <label>Company Address</label>
+                    <input type="text" name="address" placeholder="456 Business Ave, Suite 100, City, State, ZIP">
+                    <h3 style="font-size:16px;margin:16px 0 12px;">Company Profile</h3>
+                    <label>Company Website</label>
+                    <input type="url" name="website" placeholder="https://www.acmecorp.com">
+                    <label>Industry</label>
+                    <input type="text" name="industry" placeholder="Optional — helps candidates learn more">
+                    <label>Company Description</label>
+                    <textarea name="description" rows="4" placeholder="Tell job seekers what your company does, your mission, culture..."></textarea>
+                    <p class="text-muted" style="font-size:12px;">Minimum 40 characters. A good description attracts better candidates.</p>
+                    <label>Company Logo</label>
+                    <div id="logo-upload-zone" style="border:2px dashed #e2e8f0;border-radius:8px;padding:20px;text-align:center;margin-bottom:16px;cursor:pointer;">
+                        Click to upload or drag and drop<br>
+                        <span class="text-muted" style="font-size:12px;">PNG, JPG, SVG — max 2 MB — Recommended: 400×400px</span>
+                        <input type="file" id="logo_upload" name="logo" style="display:none;" accept="image/png,image/jpeg,image/svg+xml">
+                    </div>
+                    <p id="logo-filename" class="text-muted" style="font-size:12px;"></p>
+                    <h3 style="font-size:16px;margin:16px 0 12px;">Account Security</h3>
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Create a strong password" required>
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" placeholder="Re-enter your password" required>
+                    <p class="text-muted" style="font-size:12px;">Employer accounts are reviewed within 24 hours to keep JobLink trusted and spam-free.</p>
+                    <div style="margin:12px 0;">
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:13px;margin:0;">
+                            <input type="checkbox" name="agree" required> I agree to JobLink's Terms of Service, Privacy Policy, and Employer Code of Conduct.
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Employer Account</button>
+                </form>
+                <div class="footer-link">Looking for a job instead? <a href="?page=create-applicant">Create an Applicant Account</a></div>
+            </div>
+        </div>
+    </main>
+    <footer class="guest-footer">
+        <div class="container">
+            <div><h4>JobLink</h4><p style="font-size:13px;color:#94a3b8;">Connecting local talent with local opportunity.</p></div>
+            <div><h4>For Job Seekers</h4><a href="#">Browse Jobs</a><a href="#">Create Resume</a><a href="#">Career Advice</a></div>
+            <div><h4>For Employers</h4><a href="#">Post a Job</a><a href="#">Search Candidates</a><a href="#">Pricing</a></div>
+            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="#">Blog</a><a href="#">Contact</a></div>
+            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+        </div>
+    </footer>
+    <script src="public/js/global.js"></script>
+    <script src="public/js/guest.js?v=3"></script>
+    <script>
+    (function(){
+        var zone = document.getElementById('logo-upload-zone');
+        var inp  = document.getElementById('logo_upload');
+        var lbl  = document.getElementById('logo-filename');
+        if (zone && inp) {
+            zone.addEventListener('click', function(){ inp.click(); });
+            inp.addEventListener('change', function(){
+                if (lbl) lbl.textContent = inp.files[0] ? 'Selected: ' + inp.files[0].name : '';
+            });
+        }
+    })();
+    </script>
+</body>
+</html>

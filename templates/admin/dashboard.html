@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/admin.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <nav>
+            <a href="?role=admin&page=dashboard" class="nav-item active"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
+            <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
+            <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
+            <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
+            <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
+            <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Admin Dashboard</div>
+        <div class="page-sub">Platform overview and key metrics</div>
+        <div class="stat-cards">
+            <div class="stat-card"><div class="num">{{total_applicants}}</div><div class="label">Applicants</div></div>
+            <div class="stat-card"><div class="num">{{total_employers}}</div><div class="label">Employers</div></div>
+            <div class="stat-card"><div class="num">{{total_admins}}</div><div class="label">Admins</div></div>
+            <div class="stat-card"><div class="num">{{job_postings}}</div><div class="label">Job Postings</div></div>
+            <div class="stat-card"><div class="num">{{total_applications}}</div><div class="label">Applications</div></div>
+            <div class="stat-card"><div class="num">{{successful_hires}}</div><div class="label">Successful Hires</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div style="background:#fff;padding:20px;border-radius:12px;border:1px solid #e2e8f0;">
+                <h4>Recent Registrations</h4>
+                {{recent_registrations}}
+            </div>
+            <div style="background:#fff;padding:20px;border-radius:12px;border:1px solid #e2e8f0;">
+                <h4>Pending Approvals</h4>
+                {{pending_approvals}}
+            </div>
+        </div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/admin.js"></script>
+</body>
+</html>

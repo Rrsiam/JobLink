@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companies – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/guest.css">
+</head>
+<body>
+    <header class="guest-header">
+        <div class="container">
+            <a href="?page=home" class="logo">Job<span>Link</span></a>
+            <nav class="nav-links">
+                <a href="?page=find-jobs">Find Jobs</a>
+                <a href="?page=companies" class="active">Companies</a>
+                <a href="?page=about">About</a>
+                <a href="?page=sign-in" class="btn btn-outline btn-sm">Log In</a>
+                <a href="?page=sign-up" class="btn btn-primary btn-sm">Register</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section style="padding:24px 0;">
+                <h1 style="font-size:32px;font-weight:700;">Explore Companies</h1>
+                <p class="text-muted">Discover the best places to work and find your next opportunity</p>
+                <div style="margin:16px 0;">
+                    <input type="text" placeholder="Search company name, industry..." style="width:100%;max-width:400px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;">
+                </div>
+                <div class="company-grid">
+                    {{company_list}}
+                </div>
+                <div class="text-muted" style="margin-top:8px;">Showing {{showing}} of {{total}} companies</div>
+            </section>
+        </div>
+    </main>
+    <footer class="guest-footer">
+        <div class="container">
+            <div><h4>JobLink</h4><p style="font-size:13px;color:#94a3b8;">Connecting local talent with local opportunity.</p></div>
+            <div><h4>For Job Seekers</h4><a href="#">Browse Jobs</a><a href="#">Create Resume</a><a href="#">Career Advice</a></div>
+            <div><h4>For Employers</h4><a href="#">Post a Job</a><a href="#">Search Candidates</a><a href="#">Pricing</a></div>
+            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="#">Blog</a><a href="#">Contact</a></div>
+            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+        </div>
+    </footer>
+    <script src="public/js/global.js"></script>
+    <script src="public/js/guest.js?v=2"></script>
+</body>
+</html>

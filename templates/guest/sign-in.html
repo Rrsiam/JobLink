@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/guest.css">
+</head>
+<body>
+    <header class="guest-header">
+        <div class="container">
+            <a href="?page=home" class="logo">Job<span>Link</span></a>
+            <nav class="nav-links">
+                <a href="?page=find-jobs">Find Jobs</a>
+                <a href="?page=companies">Companies</a>
+                <a href="?page=about">About</a>
+                <a href="?page=sign-in" class="btn btn-primary btn-sm">Log In</a>
+                <a href="?page=sign-up" class="btn btn-outline btn-sm">Register</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="auth-wrapper">
+            <div class="auth-card">
+                <h2>Welcome back</h2>
+                <p class="sub">Sign in to your JobLink account</p>
+                {{error}}
+                {{account_notice}}
+                <form method="POST" action="?page=sign-in">
+                    <label>Email address *</label>
+                    <input type="email" name="email" placeholder="you@example.com" required>
+                    <label>Password *</label>
+                    <input type="password" name="password" placeholder="Enter your password" required>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <label style="display:flex;align-items:center;gap:6px;font-weight:400;font-size:13px;margin:0;">
+                            <input type="checkbox" name="remember"> Remember me for 30 days
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sign In →</button>
+                </form>
+                <div class="divider">or continue with</div>
+                <button class="social-btn">G Google</button>
+                <button class="social-btn">in LinkedIn</button>
+                <div class="footer-link">Don't have an account? <a href="?page=sign-up">Create one free →</a></div>
+            </div>
+        </div>
+    </main>
+    <footer class="guest-footer">
+        <div class="container">
+            <div><h4>JobLink</h4><p style="font-size:13px;color:#94a3b8;">Connecting local talent with local opportunity.</p></div>
+            <div><h4>For Job Seekers</h4><a href="#">Browse Jobs</a><a href="#">Create Resume</a><a href="#">Career Advice</a></div>
+            <div><h4>For Employers</h4><a href="#">Post a Job</a><a href="#">Search Candidates</a><a href="#">Pricing</a></div>
+            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="#">Blog</a><a href="#">Contact</a></div>
+            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+        </div>
+    </footer>
+    <script src="public/js/global.js"></script>
+    <script src="public/js/guest.js?v=2"></script>
+</body>
+</html>

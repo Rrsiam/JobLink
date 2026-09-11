@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/employer.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=employer&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{company_name}}</div><div class="role">Employer</div></div>
+        <nav>
+            <a href="?role=employer&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=employer&page=company-profile" class="nav-item active"><span class="icon">🏢</span><span>Company Profile</span></a>
+            <a href="?role=employer&page=post-job" class="nav-item"><span class="icon">➕</span><span>Post a Job</span></a>
+            <a href="?role=employer&page=manage-jobs" class="nav-item"><span class="icon">📋</span><span>Manage Jobs</span></a>
+            <a href="?role=employer&page=applicants" class="nav-item"><span class="icon">👥</span><span>Applications</span></a>
+            <a href="?role=employer&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">{{company_name}}</div>
+        <div class="page-sub"><a href="?role=employer&page=edit-company" class="btn btn-outline btn-sm">Edit Profile</a></div>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                {{profile_logo}}
+                <div>
+                    <h1 style="font-size:24px;">{{company_name}}</h1>
+                    <div class="text-muted">{{industry}} · {{location}} · {{size}} employees</div>
+                    <div class="text-muted">{{website}} · {{phone}} · {{email}}</div>
+                </div>
+            </div>
+            <hr style="margin:16px 0;border-color:#e2e8f0;">
+            <div><strong>About the Company</strong><br>{{about}}</div>
+            <hr style="margin:16px 0;border-color:#e2e8f0;">
+            <div><strong>Benefits &amp; Perks</strong><br>{{benefits}}</div>
+            <hr style="margin:16px 0;border-color:#e2e8f0;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div><strong>Industry</strong><br>{{industry}}</div>
+                <div><strong>Company Size</strong><br>{{size}}</div>
+                <div><strong>Founded</strong><br>{{founded}}</div>
+                <div><strong>Location</strong><br>{{location}}</div>
+            </div>
+            <hr style="margin:16px 0;border-color:#e2e8f0;">
+            <div><strong>Quick Stats</strong><br>
+                Active Openings: {{openings}} · Total Applicants: {{total_applicants}} · Hires This Year: {{hires}}
+            </div>
+            <hr style="margin:16px 0;border-color:#e2e8f0;">
+            <div><strong>Current Job Openings</strong>
+                <div class="job-grid" style="grid-template-columns:1fr 1fr;margin-top:12px;">{{open_jobs}}</div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/employer.js"></script>
+</body>
+</html>

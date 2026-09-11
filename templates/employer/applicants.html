@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/employer.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=employer&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{company_name}}</div><div class="role">Employer</div></div>
+        <nav>
+            <a href="?role=employer&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=employer&page=company-profile" class="nav-item"><span class="icon">🏢</span><span>Company Profile</span></a>
+            <a href="?role=employer&page=post-job" class="nav-item"><span class="icon">➕</span><span>Post a Job</span></a>
+            <a href="?role=employer&page=manage-jobs" class="nav-item"><span class="icon">📋</span><span>Manage Jobs</span></a>
+            <a href="?role=employer&page=applicants" class="nav-item active"><span class="icon">👥</span><span>Applications</span></a>
+            <a href="?role=employer&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Applicants</div>
+        <div class="page-sub">{{job_title}} · {{total_applicants}} total applicants</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+            <a href="#" class="btn btn-primary btn-sm">All</a>
+            <a href="#" class="btn btn-outline btn-sm">New {{new_count}}</a>
+            <a href="#" class="btn btn-outline btn-sm">Under Review {{review_count}}</a>
+            <a href="#" class="btn btn-outline btn-sm">Shortlisted {{shortlisted_count}}</a>
+            <a href="#" class="btn btn-outline btn-sm">Rejected {{rejected_count}}</a>
+            <a href="#" class="btn btn-outline btn-sm">Hired {{hired_count}}</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Applicant</th><th>Location</th><th>Skills</th><th>Experience</th><th>Applied</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>{{applicant_rows}}</tbody>
+            </table>
+        </div>
+        <div class="text-muted">Showing {{showing}} of {{total_applicants}} applicants</div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/employer.js"></script>
+</body>
+</html>

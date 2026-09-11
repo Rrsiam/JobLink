@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/admin.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <nav>
+            <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
+            <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
+            <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
+            <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
+            <a href="?role=admin&page=reports" class="nav-item active"><span class="icon">📈</span><span>Reports</span></a>
+            <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Reports &amp; Analytics</div>
+        <div class="page-sub">Platform performance overview</div>
+        <div class="stat-cards">
+            <div class="stat-card"><div class="num">{{total_users}}</div><div class="label">Total Users</div></div>
+            <div class="stat-card"><div class="num">{{job_postings}}</div><div class="label">Job Postings</div></div>
+            <div class="stat-card"><div class="num">{{total_applications}}</div><div class="label">Applications</div></div>
+            <div class="stat-card"><div class="num">{{active_companies}}</div><div class="label">Active Companies</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div style="background:#fff;padding:20px;border-radius:12px;border:1px solid #e2e8f0;">
+                <h4>User Growth</h4>
+                <div style="height:150px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;">
+                    📊 Chart: Applicants &amp; Employers over time
+                </div>
+            </div>
+            <div style="background:#fff;padding:20px;border-radius:12px;border:1px solid #e2e8f0;">
+                <h4>Job Postings</h4>
+                <div style="height:150px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;">
+                    📊 Chart: Posted vs Closed per month
+                </div>
+            </div>
+            <div style="background:#fff;padding:20px;border-radius:12px;border:1px solid #e2e8f0;grid-column:1/-1;">
+                <h4>Application Activity</h4>
+                <div style="height:150px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;">
+                    📊 Chart: Total, Accepted &amp; Rejected over time
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/admin.js"></script>
+</body>
+</html>

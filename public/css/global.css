@@ -1,0 +1,21 @@
+/* global.css – styles */
+/* === Global reset & typography === */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter', system-ui, -apple-system, sans-serif; background:#f8fafc; color:#0f172a; line-height:1.5; }
+a { text-decoration:none; color:inherit; }
+.container { max-width:1200px; margin:0 auto; padding:0 24px; }
+.logo { font-size:24px; font-weight:700; color:#2563eb; letter-spacing:-0.5px; }
+.logo span { color:#0f172a; }
+.btn { display:inline-block; padding:8px 20px; border-radius:8px; font-weight:600; font-size:14px; border:none; cursor:pointer; transition:all .2s; text-align:center; }
+.btn-primary { background:#2563eb; color:#fff; }
+.btn-primary:hover { background:#1d4ed8; transform:translateY(-1px); box-shadow:0 4px 12px rgba(37,99,235,0.3); }
+.btn-outline { background:transparent; color:#2563eb; border:1.5px solid #2563eb; }
+.btn-outline:hover { background:#eff6ff; }
+.btn-sm { padding:4px 12px; font-size:12px; }
+.btn-success { background:#22c55e; color:#fff; }
+.btn-success:hover { background:#16a34a; }
+.btn-danger { background:#ef4444; color:#fff; }
+.btn-danger:hover { background:#dc2626; }
+.btn-warning { background:#f59e0b; color:#fff; }
+.btn-warning:hover { background:#d97706; }
+.text-muted { color:#64748b; font-size:14px; }

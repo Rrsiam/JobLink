@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobLink – Find the Right Job</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/guest.css">
+</head>
+<body>
+    <header class="guest-header">
+        <div class="container">
+            <a href="?page=home" class="logo">Job<span>Link</span></a>
+            <nav class="nav-links">
+                <a href="?page=find-jobs">Find Jobs</a>
+                <a href="?page=companies">Companies</a>
+                <a href="?page=about">About</a>
+                <a href="?page=sign-in" class="btn btn-outline btn-sm">Log In</a>
+                <a href="?page=sign-up" class="btn btn-primary btn-sm">Register</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section class="hero">
+                <h1>Find the <span class="highlight">Right Job</span> Near You</h1>
+                <p>Connect with local employers and discover opportunities that match your skills, location, and career goals.</p>
+                <div class="search-bar">
+                    <input type="text" placeholder="Job title, keywords, or company">
+                    <input type="text" placeholder="City, state, or zip code">
+                    <button>Search Jobs</button>
+                </div>
+                <div class="popular-tags">
+                    <a href="#">Software Engineer</a><a href="#">Marketing</a><a href="#">Nurse</a><a href="#">Data Analyst</a>
+                </div>
+            </section>
+            <div class="stats">
+                <div class="stat-item"><div class="stat-number">48,200+</div><div class="stat-label">Active Jobs</div></div>
+                <div class="stat-item"><div class="stat-number">3,800+</div><div class="stat-label">Companies</div></div>
+                <div class="stat-item"><div class="stat-number">920K+</div><div class="stat-label">Job Seekers</div></div>
+                <div class="stat-item"><div class="stat-number">187K+</div><div class="stat-label">Successful Hires</div></div>
+            </div>
+            <h2 class="section-title">Popular Categories</h2>
+            <div class="categories-grid">
+                <div class="category-card"><div class="icon">💻</div><div class="name">Technology</div><div class="count">5,240 jobs</div></div>
+                <div class="category-card"><div class="icon">🏥</div><div class="name">Healthcare</div><div class="count">3,180 jobs</div></div>
+                <div class="category-card"><div class="icon">💰</div><div class="name">Finance</div><div class="count">2,760 jobs</div></div>
+                <div class="category-card"><div class="icon">🎨</div><div class="name">Design</div><div class="count">1,920 jobs</div></div>
+            </div>
+            <h2 class="section-title">Latest Jobs</h2>
+            <div class="job-grid">
+                {{job_list}}
+            </div>
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-bottom:48px;">
+                <div class="step-card" style="background:#fff;padding:24px;border-radius:12px;border:1px solid #e2e8f0;text-align:center;">
+                    <div class="num" style="display:inline-block;background:#2563eb;color:#fff;width:36px;height:36px;border-radius:50%;line-height:36px;font-weight:700;margin-bottom:12px;">01</div>
+                    <h4>Create Your Profile</h4><p>Sign up in under 2 minutes.</p>
+                </div>
+                <div class="step-card" style="background:#fff;padding:24px;border-radius:12px;border:1px solid #e2e8f0;text-align:center;">
+                    <div class="num" style="display:inline-block;background:#2563eb;color:#fff;width:36px;height:36px;border-radius:50%;line-height:36px;font-weight:700;margin-bottom:12px;">02</div>
+                    <h4>Search &amp; Discover</h4><p>Browse local job listings.</p>
+                </div>
+                <div class="step-card" style="background:#fff;padding:24px;border-radius:12px;border:1px solid #e2e8f0;text-align:center;">
+                    <div class="num" style="display:inline-block;background:#2563eb;color:#fff;width:36px;height:36px;border-radius:50%;line-height:36px;font-weight:700;margin-bottom:12px;">03</div>
+                    <h4>Apply in One Click</h4><p>Submit with your saved profile.</p>
+                </div>
+                <div class="step-card" style="background:#fff;padding:24px;border-radius:12px;border:1px solid #e2e8f0;text-align:center;">
+                    <div class="num" style="display:inline-block;background:#2563eb;color:#fff;width:36px;height:36px;border-radius:50%;line-height:36px;font-weight:700;margin-bottom:12px;">04</div>
+                    <h4>Land the Job</h4><p>Get hired faster.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="guest-footer">
+        <div class="container">
+            <div><h4>JobLink</h4><p style="font-size:13px;color:#94a3b8;">Connecting local talent with local opportunity.</p></div>
+            <div><h4>For Job Seekers</h4><a href="#">Browse Jobs</a><a href="#">Create Resume</a><a href="#">Career Advice</a></div>
+            <div><h4>For Employers</h4><a href="#">Post a Job</a><a href="#">Search Candidates</a><a href="#">Pricing</a></div>
+            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="#">Blog</a><a href="#">Contact</a></div>
+            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+        </div>
+    </footer>
+    <script src="public/js/global.js"></script>
+    <script src="public/js/guest.js?v=2"></script>
+</body>
+</html>

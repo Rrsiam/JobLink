@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/applicant.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=applicant&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Applicant</div></div>
+        <nav>
+            <a href="?role=applicant&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=applicant&page=find-jobs" class="nav-item"><span class="icon">🔍</span><span>Find Jobs</span></a>
+            <a href="?role=applicant&page=saved-jobs" class="nav-item"><span class="icon">❤️</span><span>Saved Jobs</span></a>
+            <a href="?role=applicant&page=applications" class="nav-item"><span class="icon">📋</span><span>My Applications</span></a>
+            <a href="?role=applicant&page=resume" class="nav-item"><span class="icon">📄</span><span>Resume</span></a>
+            <a href="?role=applicant&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
+            <a href="?role=applicant&page=settings" class="nav-item active"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">Settings</div>
+        <div class="page-sub">Manage your account, notifications, and privacy preferences</div>
+        {{notification}}
+        <form class="dash-form" method="POST" action="?role=applicant&page=settings">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3>Account Information</h3>
+                <div class="form-row">
+                    <div><label>Full Name</label><input type="text" value="{{name}}"></div>
+                    <div><label>Account Type</label><input type="text" value="Applicant" disabled></div>
+                </div>
+                <div class="form-row">
+                    <div><label>Email Address</label><input type="email" value="{{email}}"></div>
+                    <div><label>Phone Number</label><input type="tel" value="{{phone}}"></div>
+                </div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3>Change Password</h3>
+                <input type="password" name="current_password" placeholder="Current Password *">
+                <input type="password" name="new_password" placeholder="New Password *">
+                <input type="password" name="confirm_password" placeholder="Confirm Password *">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3>Email Notifications</h3>
+                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox" name="settings[recommendations]" {{notif_recommendations}}> Job Recommendations</label>
+                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox" name="settings[status_updates]" {{notif_status_updates}}> Application Status Updates</label>
+                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox" name="settings[employer_messages]" {{notif_employer_messages}}> Interview Invitations</label>
+                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox" name="settings[weekly_summary]" {{notif_weekly_summary}}> Weekly Job Summary</label>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3>Privacy Settings</h3>
+                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox" checked> Public Profile</label>
+                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox" checked> Allow Employer Messages</label>
+                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox"> Display Email on Profile</label>
+                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox"> Two-Factor Authentication</label>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+            <div class="danger-zone">
+                <h4>Danger Zone</h4>
+                <p>Permanently delete your JobLink account and all associated data. This action cannot be undone.</p>
+                <label style="font-size:13px;color:#475569;">Enter your password to confirm</label>
+                <input type="password" name="delete_password" placeholder="Current Password *">
+                <button type="submit" name="delete_account" value="1" class="btn btn-danger" onclick="return confirm('Are you sure? This permanently deletes your account and ALL related data (profile, resume, applications, saved jobs). This cannot be undone.')">Delete My Account</button>
+            </div>
+        </form>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/applicant.js"></script>
+</body>
+</html>
