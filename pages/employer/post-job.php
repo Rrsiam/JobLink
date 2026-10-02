@@ -53,10 +53,19 @@ foreach ($categories as $cat) {
     $category_options .= "<option value='{$cat['id']}'>{$cat['name']}</option>";
 }
 
+$company_name = 'My Company';
+$ep = $db->prepare("SELECT company_name FROM employer_profiles WHERE user_id = ?")->execute([$user_id])->fetch();
+if ($ep && !empty($ep['company_name'])) {
+    $company_name = $ep['company_name'];
+} else {
+    $u = $db->prepare("SELECT name FROM users WHERE id = ?")->execute([$user_id])->fetch();
+    if ($u && !empty($u['name'])) $company_name = $u['name'];
+}
+
 render('employer/post-job.html', [
-    'company_name' => 'My Company',
-    'category_options' => new RawHtml($category_options),
-    'job_type_options' => new RawHtml(job_type_options_html()),
-    'default_deadline' => date('Y-m-d', strtotime('+30 days')),
-    'notification' => flash_message()
+    'company_name' => $company_name,
+    'category_options' => new RawHtml(category_options_html()),
+    'type_options' => new RawHtml(job_type_options_html()),
+    'job_types' => job_types(),
+    'notification' => new RawHtml(flash_message())
 ]);

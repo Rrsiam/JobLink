@@ -69,8 +69,17 @@ if ($is_open) {
 }
 $job_actions .= " <a href='?role=employer&page=job-details&id=$id&action=delete' class='btn btn-danger btn-sm' onclick=\"return confirm('Delete this job? This also removes its applications.')\">Delete</a>";
 
+$company_name = 'My Company';
+$ep = $db->prepare("SELECT company_name FROM employer_profiles WHERE user_id = ?")->execute([$user_id])->fetch();
+if ($ep && !empty($ep['company_name'])) {
+    $company_name = $ep['company_name'];
+} else {
+    $u = $db->prepare("SELECT name FROM users WHERE id = ?")->execute([$user_id])->fetch();
+    if ($u && !empty($u['name'])) $company_name = $u['name'];
+}
+
 render('employer/job-details.html', [
-    'company_name' => 'My Company',
+    'company_name' => $company_name,
     'job_title' => $job['title'],
     'category' => $job['category_name'] ?: 'Uncategorized',
     'location' => $job['location'],

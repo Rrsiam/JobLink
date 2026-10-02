@@ -27,7 +27,7 @@ if ($view_id > 0) {
     $view = $db->prepare("
         SELECT a.*, u.name as applicant_name, u.email as applicant_email, u.phone as applicant_phone,
                ap.professional_title, ap.address as applicant_location, ap.skills,
-               j.title as job_title, emp.name as company_name, ep.company_name as company_profile_name
+                j.title as job_title, COALESCE(ep.company_name, emp.name) as company_name, ep.company_name as company_profile_name
         FROM applications a 
         JOIN users u ON a.applicant_id = u.id 
         LEFT JOIN applicant_profiles ap ON ap.user_id = u.id
@@ -87,18 +87,19 @@ $params = [];
 
 $sql = "
     SELECT a.*, u.name as applicant_name, j.title as job_title, 
-           emp.name as company_name 
+           COALESCE(ep.company_name, emp.name) as company_name 
     FROM applications a 
     JOIN users u ON a.applicant_id = u.id 
     JOIN jobs j ON a.job_id = j.id 
-    JOIN users emp ON j.employer_id = emp.id ";
+    JOIN users emp ON j.employer_id = emp.id 
+    LEFT JOIN employer_profiles ep ON ep.user_id = emp.id ";
 
 if ($status_filter && $status_filter !== 'all') {
     $where[] = "a.status = ?";
     $params[] = $status_filter;
 }
 if ($search !== '') {
-    $where[] = "(u.name LIKE ? OR j.title LIKE ? OR emp.name LIKE ?)";
+    $where[] = "(u.name LIKE ? OR j.title LIKE ? OR COALESCE(ep.company_name, emp.name) LIKE ?)";
     $like = '%' . $search . '%';
     array_push($params, $like, $like, $like);
 }

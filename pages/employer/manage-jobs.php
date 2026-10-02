@@ -31,8 +31,19 @@ foreach ($jobs as $job) {
     </tr>";
 }
 
+$company_name = 'My Company';
+$ep = $db->prepare("SELECT company_name FROM employer_profiles WHERE user_id = ?")->execute([$user_id])->fetch();
+if ($ep && !empty($ep['company_name'])) {
+    $company_name = $ep['company_name'];
+} else {
+    $u = $db->prepare("SELECT name FROM users WHERE id = ?")->execute([$user_id])->fetch();
+    if ($u && !empty($u['name'])) {
+        $company_name = $u['name'];
+    }
+}
+
 render('employer/manage-jobs.html', [
-    'company_name' => 'My Company',
+    'company_name' => $company_name,
     'total_jobs' => count($jobs),
     'job_rows' => new RawHtml($rows),
     'showing' => count($jobs),

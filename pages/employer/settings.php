@@ -39,8 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $user = get_user_data();
 
+$company_name = 'My Company';
+$ep = $db->prepare("SELECT company_name FROM employer_profiles WHERE user_id = ?")->execute([$user_id])->fetch();
+if ($ep && !empty($ep['company_name'])) {
+    $company_name = $ep['company_name'];
+} else {
+    $u = $db->prepare("SELECT name FROM users WHERE id = ?")->execute([$user_id])->fetch();
+    if ($u && !empty($u['name'])) $company_name = $u['name'];
+}
+
 render('employer/settings.html', [
-    'company_name' => 'My Company',
+    'company_name' => $company_name,
     'full_name' => $user['name'],
     'email' => $user['email'],
     'phone' => $user['phone'] ?: '',

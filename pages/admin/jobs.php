@@ -10,9 +10,10 @@ $search = trim($_GET['search'] ?? '');
 $params = [];
 $where = [];
 
-$sql = "SELECT j.*, u.name as employer_name, c.name as category_name 
+$sql = "SELECT j.*, COALESCE(ep.company_name, u.name) as employer_name, c.name as category_name 
         FROM jobs j 
         JOIN users u ON j.employer_id = u.id 
+        LEFT JOIN employer_profiles ep ON ep.user_id = u.id
         LEFT JOIN categories c ON j.category_id = c.id";
 
 if ($status_filter && $status_filter !== 'all') {
@@ -20,7 +21,7 @@ if ($status_filter && $status_filter !== 'all') {
     $params[] = $status_filter;
 }
 if ($search !== '') {
-    $where[] = "(j.title LIKE ? OR u.name LIKE ? OR c.name LIKE ?)";
+    $where[] = "(j.title LIKE ? OR COALESCE(ep.company_name, u.name) LIKE ? OR c.name LIKE ?)";
     $like = '%' . $search . '%';
     array_push($params, $like, $like, $like);
 }

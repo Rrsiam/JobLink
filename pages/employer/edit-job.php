@@ -65,18 +65,23 @@ if ($job['type'] && !in_array(strtolower($job['type']), array_map('strtolower', 
     $job_type_options .= "<option value='" . e($job['type']) . "' selected>" . e($job['type']) . "</option>";
 }
 
+$company_name = 'My Company';
+$ep = $db->prepare("SELECT company_name FROM employer_profiles WHERE user_id = ?")->execute([$user_id])->fetch();
+if ($ep && !empty($ep['company_name'])) {
+    $company_name = $ep['company_name'];
+} else {
+    $u = $db->prepare("SELECT name FROM users WHERE id = ?")->execute([$user_id])->fetch();
+    if ($u && !empty($u['name'])) $company_name = $u['name'];
+}
+
 render('employer/edit-job.html', [
-    'company_name' => 'My Company',
+    'company_name' => $company_name,
     'job_title' => $job['title'],
     'location' => $job['location'],
     'vacancies' => $job['vacancy'] ?? '',
-    // render() skips NULL values, which would leave the literal {{min_salary}}
-    // text sitting in the input. Saving that form would then push the
-    // placeholder into the DECIMAL column, where MySQL silently stores 0.00.
     'min_salary' => $job['salary_min'] ?? '',
     'max_salary' => $job['salary_max'] ?? '',
     'description' => $job['description'],
-    // Every column below is nullable, so each needs the same NULL guard.
     'responsibilities_raw' => $job['responsibilities'] ?? '',
     'education' => $job['education'] ?? '',
     'experience' => $job['experience'] ?? '',
