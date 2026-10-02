@@ -72,7 +72,7 @@ if ($view_id > 0) {
             'status_class' => $badge['badge'],
             'status_buttons' => new RawHtml($status_buttons),
             'resume_link' => new RawHtml($resume_link),
-            'notification' => flash_message(),
+           'notification' => new RawHtml(flash_message()),
         ]);
         exit;
     }
@@ -153,5 +153,5 @@ render('admin/applications.html', [
     'status_filter' => e($status_filter),
     'search' => e($search),
     'showing' => count($apps),
-    'notification' => flash_message()
+    'notification' => new RawHtml(flash_message())
 ]);

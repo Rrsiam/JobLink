@@ -69,5 +69,5 @@ if (!$categories) {
 render('admin/categories.html', [
     'total_categories' => count($categories),
     'category_rows' => new RawHtml($rows),
-    'notification' => flash_message()
+   'notification' => new RawHtml(flash_message())
 ]);
