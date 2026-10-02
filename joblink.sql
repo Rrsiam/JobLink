@@ -38,6 +38,7 @@ CREATE TABLE applicant_profiles (
  languages VARCHAR(255) DEFAULT NULL,
  resume VARCHAR(255) DEFAULT NULL,
  photo VARCHAR(255) DEFAULT NULL,
+ verification_doc VARCHAR(255) DEFAULT NULL,
  CONSTRAINT fk_applicant_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -56,10 +57,19 @@ CREATE TABLE employer_profiles (
  CONSTRAINT fk_employer_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE admin_profiles (
+  user_id INT PRIMARY KEY,
+  professional_title VARCHAR(150) DEFAULT NULL,
+  department VARCHAR(120) DEFAULT NULL,
+  address VARCHAR(255) DEFAULT NULL,
+  photo VARCHAR(255) DEFAULT NULL,
+  CONSTRAINT fk_admin_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 CREATE TABLE categories (
- id INT AUTO_INCREMENT PRIMARY KEY,
- name VARCHAR(120) NOT NULL UNIQUE,
- status ENUM('active','inactive') DEFAULT 'active'
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(120) NOT NULL UNIQUE,
+  status ENUM('active','inactive') DEFAULT 'active'
 ) ENGINE=InnoDB;
 
 CREATE TABLE jobs (

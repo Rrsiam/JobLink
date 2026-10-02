@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile – JobLink</title>
-    <link rel="stylesheet" href="public/css/global.css">
-    <link rel="stylesheet" href="public/css/applicant.css">
+    <link rel="stylesheet" href="public/css/global.css?v=6">
+    <link rel="stylesheet" href="public/css/applicant.css?v=6">
 </head>
 <body>
 <div class="dash-wrapper">
@@ -31,17 +31,20 @@
         <form class="dash-form" method="POST" action="?role=applicant&page=edit-profile">
             <input type="hidden" name="btn_update" value="1">
             <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;margin-top:16px;">
-                <h3 style="margin:0 0 12px;">Personal Information</h3>
+                <h3 style="margin:0 0 12px;">Account Information</h3>
                 <div class="form-row">
                     <div><label>Full Name</label><input type="text" name="full_name" value="{{name}}"></div>
+                    <div><label>Account Type</label><input type="text" value="{{account_type}}" disabled></div>
+                </div>
+                <div class="form-row">
                     <div><label>Email Address</label><input type="email" name="email" value="{{email}}"></div>
-                </div>
-                <div class="form-row">
                     <div><label>Phone Number</label><input type="tel" name="phone" value="{{phone}}"></div>
-                    <div><label>Address / Location</label><input type="text" name="location" value="{{location}}"></div>
                 </div>
                 <div class="form-row">
+                    <div><label>Address / Location</label><input type="text" name="location" value="{{location}}"></div>
                     <div><label>Professional Title</label><input type="text" name="title" value="{{title}}" placeholder="e.g. Junior Web Developer"></div>
+                </div>
+                <div class="form-row">
                     <div><label>Gender</label>
                         <select name="gender">
                             <option value="" {{gender_none}}>Select</option>
@@ -70,6 +73,36 @@
                 </div>
             </div>
         </form>
+
+        <form class="dash-form" method="POST" action="?role=applicant&page=edit-profile">
+            <input type="hidden" name="btn_password" value="1">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3 style="margin:0 0 12px;">Change Password</h3>
+                <label>Current Password</label>
+                <input type="password" name="current_password" autocomplete="current-password">
+                <label>New Password</label>
+                <input type="password" name="new_password" autocomplete="new-password">
+                <label>Confirm New Password</label>
+                <input type="password" name="confirm_password" autocomplete="new-password">
+                <button type="submit" class="btn btn-primary">Update Password</button>
+            </div>
+        </form>
+
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+            <div class="pf-card-head">
+                <h3 style="margin:0;"><span class="icon">&#128196;</span> Resume</h3>
+            </div>
+            <div class="resume-row">
+                <div class="resume-row-text">
+                    <strong>{{resume_file}}</strong>
+                    <span>Upload or replace your resume on the
+                        <a href="?role=applicant&amp;page=resume">Resume</a> page.</span>
+                </div>
+                <div class="resume-row-actions">
+                    <a class="btn btn-outline btn-sm" href="?role=applicant&amp;page=resume-download">Download</a>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 <script src="public/js/global.js"></script>

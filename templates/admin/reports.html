@@ -11,13 +11,14 @@
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
         <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
-        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Admin</div></div>
         <nav>
             <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
             <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
             <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
             <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
             <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
             <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
             <a href="?role=admin&page=reports" class="nav-item active"><span class="icon">📈</span><span>Reports</span></a>
             <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
@@ -33,26 +34,32 @@
             <div class="stat-card"><div class="num">{{total_applications}}</div><div class="label">Applications</div></div>
             <div class="stat-card"><div class="num">{{active_companies}}</div><div class="label">Active Companies</div></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-            <div style="background:#fff;padding:20px;border-radius:12px;border:1px solid #e2e8f0;">
-                <h4>User Growth</h4>
-                <div style="height:150px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;">
-                    📊 Chart: Applicants &amp; Employers over time
+        <div class="rp-period">Last 6 months &middot; {{period}}</div>
+
+        <div class="rp-grid">
+            <section class="rp-card">
+                <div class="rp-card-head">
+                    <div>
+                        <h2 class="rp-card-title"><span class="icon">👥</span>User Growth</h2>
+                        <p class="rp-card-sub">Applicants and employers registered each month</p>
+                    </div>
+                    <span class="rp-tag">6 months</span>
                 </div>
-            </div>
-            <div style="background:#fff;padding:20px;border-radius:12px;border:1px solid #e2e8f0;">
-                <h4>Job Postings</h4>
-                <div style="height:150px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;">
-                    📊 Chart: Posted vs Closed per month
+                {{growth_chart}}
+            </section>
+
+            <section class="rp-card">
+                <div class="rp-card-head">
+                    <div>
+                        <h2 class="rp-card-title"><span class="icon">💼</span>Job Postings</h2>
+                        <p class="rp-card-sub">Posted versus closed each month</p>
+                    </div>
+                    <span class="rp-tag">6 months</span>
                 </div>
+                {{jobs_chart}}
+            </section>
+
             </div>
-            <div style="background:#fff;padding:20px;border-radius:12px;border:1px solid #e2e8f0;grid-column:1/-1;">
-                <h4>Application Activity</h4>
-                <div style="height:150px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;">
-                    📊 Chart: Total, Accepted &amp; Rejected over time
-                </div>
-            </div>
-        </div>
     </main>
 </div>
 <script src="public/js/global.js"></script>

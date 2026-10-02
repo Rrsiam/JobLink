@@ -1,0 +1,39 @@
+# Uploaded files live under the document root, so Apache would serve them to
+# anyone who knew or could guess the file name - bypassing the auth checks in
+# resume-download.php / verification-doc.php entirely. Resumes and verification
+# documents are private, so they are denied here and served only through those
+# controllers.
+#
+# logos/ stays reachable because company logos are public and are rendered with
+# <img src="uploads/logos/..."> on the guest company profile page.
+
+<IfModule mod_authz_core.c>
+    # Apache 2.4+
+    <FilesMatch "\.(php|phtml|php[0-9]|cgi|pl|py|sh|htaccess)$">
+        Require all denied
+    </FilesMatch>
+
+    <IfModule mod_rewrite.c>
+        RewriteEngine On
+        # Deny private areas; anything else under uploads/ (i.e. logos) passes.
+        RewriteRule ^(resumes|documents)/ - [F,L]
+    </IfModule>
+
+    # Belt and braces: also deny by directory name for the 2.4 authz provider.
+    RedirectMatch 403 ^/uploads/(resumes|documents)/
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+    # Apache 2.2 fallback
+    <FilesMatch "\.(php|phtml|php[0-9]|cgi|pl|py|sh|htaccess)$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+    <IfModule mod_rewrite.c>
+        RewriteEngine On
+        RewriteRule ^(resumes|documents)/ - [F,L]
+    </IfModule>
+</IfModule>
+
+# Never list directory contents.
+Options -Indexes

@@ -10,28 +10,32 @@
 <body>
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
-        <a href='?role=employer&page=dashboard' class="logo">Job<span>Link</span></a>
+        <a href="?role=employer&page=dashboard" class="logo">Job<span>Link</span></a>
         <div class="user-info"><div class="name">{{company_name}}</div><div class="role">Employer</div></div>
         <nav>
-            <a href="?role=employer&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
-            <a href="?role=employer&page=company-profile" class="nav-item"><span class="icon">🏢</span><span>Company Profile</span></a>
-            <a href="?role=employer&page=post-job" class="nav-item"><span class="icon">➕</span><span>Post a Job</span></a>
-            <a href="?role=employer&page=manage-jobs" class="nav-item"><span class="icon">📋</span><span>Manage Jobs</span></a>
-            <a href="?role=employer&page=applicants" class="nav-item active"><span class="icon">👥</span><span>Applications</span></a>
-            <a href="?role=employer&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+            <a href="?role=employer&page=dashboard" class="nav-item"><span class="icon">&#128202;</span><span>Dashboard</span></a>
+            <a href="?role=employer&page=company-profile" class="nav-item"><span class="icon">&#127970;</span><span>Company Profile</span></a>
+            <a href="?role=employer&page=post-job" class="nav-item"><span class="icon">&#10133;</span><span>Post a Job</span></a>
+            <a href="?role=employer&page=manage-jobs" class="nav-item"><span class="icon">&#128203;</span><span>Manage Jobs</span></a>
+            <a href="?role=employer&page=applicants" class="nav-item active"><span class="icon">&#128101;</span><span>Applications</span></a>
+            <a href="?role=employer&page=settings" class="nav-item"><span class="icon">&#9881;</span><span>Settings</span></a>
         </nav>
-        <a href="?page=logout" class="logout">🚪 Logout</a>
+        <a href="?page=logout" class="logout">&#128682; Logout</a>
     </aside>
     <main class="dash-main">
         <div class="page-title">Applicants</div>
         <div class="page-sub">{{job_title}} · {{total_applicants}} total applicants</div>
+        {{notification}}
+        <form method="GET" action="index.php" style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+            <input type="hidden" name="role" value="employer">
+            <input type="hidden" name="page" value="applicants">
+            <select name="job_id" style="padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                {{job_options}}
+            </select>
+            <button type="submit" class="btn btn-outline btn-sm">Filter by job</button>
+        </form>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
-            <a href="#" class="btn btn-primary btn-sm">All</a>
-            <a href="#" class="btn btn-outline btn-sm">New {{new_count}}</a>
-            <a href="#" class="btn btn-outline btn-sm">Under Review {{review_count}}</a>
-            <a href="#" class="btn btn-outline btn-sm">Shortlisted {{shortlisted_count}}</a>
-            <a href="#" class="btn btn-outline btn-sm">Rejected {{rejected_count}}</a>
-            <a href="#" class="btn btn-outline btn-sm">Hired {{hired_count}}</a>
+            {{filter_tabs}}
         </div>
         <div class="table-wrap">
             <table>

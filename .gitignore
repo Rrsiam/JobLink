@@ -1,1 +1,7 @@
-uploads/
+# Ignore the uploaded files themselves (resumes, verification documents, logos),
+# but keep uploads/.htaccess tracked. It is the rule that stops Apache serving
+# resumes and verification documents straight out of the document root, bypassing
+# the auth checks in resume-download.php / verification-doc.php. Ignoring the whole
+# directory would leave that protection out of the deployment.
+uploads/*
+!uploads/.htaccess

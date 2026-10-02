@@ -13,7 +13,6 @@
             <a href="?page=home" class="logo">Job<span>Link</span></a>
             <nav class="nav-links">
                 <a href="?page=find-jobs">Find Jobs</a>
-                <a href="?page=companies">Companies</a>
                 <a href="?page=about">About</a>
                 <a href="?page=sign-in" class="btn btn-outline btn-sm">Log In</a>
                 <a href="?page=sign-up" class="btn btn-primary btn-sm">Register</a>
@@ -27,7 +26,7 @@
                 <p class="sub">Already have an account? <a href="?page=sign-in">Sign in</a></p>
                 <hr style="margin:16px 0;border-color:#e2e8f0;">
                 {{error}}
-                <form method="POST" action="?page=create-applicant">
+                <form method="POST" action="?page=create-applicant" enctype="multipart/form-data">
                     <h3 style="font-size:16px;margin-bottom:12px;">Personal Information</h3>
                     <label>Full Name</label>
                     <input type="text" name="full_name" placeholder="Maria Santos" required>
@@ -45,6 +44,10 @@
                     <label>Skills</label>
                     <textarea name="skills" rows="2" placeholder="e.g. JavaScript, Python, Project Management, Graphic Design..."></textarea>
                     <p class="text-muted" style="font-size:12px;">Separate skills with commas. Be specific — recruiters search by skill keywords.</p>
+                    <h3 style="font-size:16px;margin:16px 0 12px;">Verification Documents</h3>
+                    <label>Upload ID Document (NID / Passport / Driver's License)</label>
+                    <input type="file" name="verification_doc" accept=".pdf,.png,.jpg,.jpeg" required>
+                    <p class="text-muted" style="font-size:12px;">Accepted formats: PDF, PNG, JPG (max 5 MB). This is required for account approval.</p>
                     <h3 style="font-size:16px;margin:16px 0 12px;">Account Security</h3>
                     <label>Password</label>
                     <input type="password" name="password" placeholder="Create a strong password" required>
@@ -64,10 +67,10 @@
     <footer class="guest-footer">
         <div class="container">
             <div><h4>JobLink</h4><p style="font-size:13px;color:#94a3b8;">Connecting local talent with local opportunity.</p></div>
-            <div><h4>For Job Seekers</h4><a href="#">Browse Jobs</a><a href="#">Create Resume</a><a href="#">Career Advice</a></div>
-            <div><h4>For Employers</h4><a href="#">Post a Job</a><a href="#">Search Candidates</a><a href="#">Pricing</a></div>
-            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="#">Blog</a><a href="#">Contact</a></div>
-            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+            <div><h4>For Job Seekers</h4><a href="?page=find-jobs">Browse Jobs</a><a href="?page=create-applicant">Create Resume</a><a href="?page=sign-in">Sign In</a></div>
+            <div><h4>For Employers</h4><a href="?page=create-employer">Post a Job</a><a href="?page=sign-in">Sign In</a></div>
+            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="?page=find-jobs">Browse Jobs</a></div>
+            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span>Privacy · Terms</span></div>
         </div>
     </footer>
     <script src="public/js/global.js"></script>

@@ -63,14 +63,14 @@ foreach ($applications as $app) {
         : 'Negotiable';
     $deadline = !empty($jf['deadline']) ? date('M d, Y', strtotime($jf['deadline'])) : '—';
     $rows .= "<tr>
-        <td>{$app['job_title']}</td>
-        <td>{$app['company_name']}</td>
-        <td>{$app['location']}</td>
-        <td>{$salary}</td>
+        <td>" . e($app['job_title']) . "</td>
+        <td>" . e($app['company_name']) . "</td>
+        <td>" . e($app['location']) . "</td>
+        <td>" . e($salary) . "</td>
         <td>" . date('M d, Y', strtotime($app['created_at'])) . "</td>
-        <td>{$deadline}</td>
-        <td><span class='badge $badge'>" . ucfirst($app['status']) . "</span></td>
-        <td><a href='?role=applicant&page=application-details&id={$app['id']}' class='btn btn-outline btn-sm'>View</a></td>
+        <td>" . e($deadline) . "</td>
+        <td><span class='badge $badge'>" . e(ucfirst($app['status'])) . "</span></td>
+        <td><a href='?role=applicant&page=application-details&id=" . (int)$app['id'] . "' class='btn btn-outline btn-sm'>View</a></td>
     </tr>";
 }
 
@@ -94,10 +94,10 @@ foreach ($filters as $key => $label) {
 
 render('applicant/applications.html', [
     'name' => $_SESSION['name'],
-    'application_rows' => $rows,
+    'application_rows' => new RawHtml($rows),
     'showing' => count($applications),
     'total_apps' => $total,
-    'filter_buttons' => $filter_buttons,
+    'filter_buttons' => new RawHtml($filter_buttons),
     'pending_count' => $status_counts['pending'] ?? 0,
     'review_count' => $status_counts['under review'] ?? 0,
     'shortlisted_count' => $status_counts['shortlisted'] ?? 0,

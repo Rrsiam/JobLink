@@ -2,23 +2,22 @@
 require_once __DIR__ . '/../../config.php';
 require_role('employer');
 
-$job_id = $_GET['id'] ?? 0;
+$job_id = (int)($_GET['id'] ?? $_POST['job_id'] ?? 0);
 $user_id = get_user_id();
 $db = getDB();
 
 $job = $db->prepare("SELECT * FROM jobs WHERE id = ? AND employer_id = ?")->execute([$job_id, $user_id])->fetch();
 
 if (!$job) {
-    header('Location: ?role=employer&page=manage-jobs');
-    exit;
+    redirect_with_flash('?role=employer&page=manage-jobs', 'Job not found.', 'error');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['job_title'] ?? '';
-    $category = $_POST['category'] ?? null;
-    $type = $_POST['job_type'] ?? 'Full-time';
-    $location = $_POST['location'] ?? '';
-    $vacancy = $_POST['vacancies'] ?? 1;
+    $title = trim($_POST['job_title'] ?? '');
+    $category = $_POST['category'] ?: null;
+    $type = normalise_job_type($_POST['job_type'] ?? $job['type']);
+    $location = trim($_POST['location'] ?? '');
+    $vacancy = max(1, (int)($_POST['vacancies'] ?? 1));
     $salary_min = $_POST['min_salary'] ?: null;
     $salary_max = $_POST['max_salary'] ?: null;
     $education = $_POST['education'] ?? '';
@@ -27,20 +26,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = $_POST['description'] ?? '';
     $responsibilities = $_POST['responsibilities'] ?? '';
     $benefits = $_POST['benefits'] ?? '';
-    $deadline = $_POST['deadline'] ?? date('Y-m-d', strtotime('+30 days'));
-    
+    // An empty or invalid date input must not silently reset the deadline.
+    $deadline = $_POST['deadline'] ?? '';
+    if (!$deadline || strtotime($deadline) === false) {
+        $deadline = $job['deadline'] ?: date('Y-m-d', strtotime('+30 days'));
+    }
+
+    if ($title === '' || $location === '') {
+        redirect_with_flash('?role=employer&page=edit-job&id=' . $job_id, 'Job title and location are required.', 'error');
+    }
+
     $db->prepare("UPDATE jobs SET 
         title = ?, category_id = ?, type = ?, location = ?, vacancy = ?,
         salary_min = ?, salary_max = ?, education = ?, experience = ?, 
         skills = ?, description = ?, responsibilities = ?, benefits = ?, deadline = ?
-        WHERE id = ?")->execute([
+        WHERE id = ? AND employer_id = ?")->execute([
         $title, $category, $type, $location, $vacancy,
         $salary_min, $salary_max, $education, $experience,
-        $skills, $description, $responsibilities, $benefits, $deadline, $job_id
+        $skills, $description, $responsibilities, $benefits, $deadline, $job_id, $user_id
     ]);
     
-    header('Location: ?role=employer&page=job-details&id=' . $job_id . '&success=Job updated');
-    exit;
+    redirect_with_flash('?role=employer&page=job-details&id=' . $job_id, 'Job updated.');
 }
 
 $categories = get_categories();
@@ -50,20 +56,35 @@ foreach ($categories as $cat) {
     $category_options .= "<option value='{$cat['id']}' $selected>{$cat['name']}</option>";
 }
 
+// Preserve the stored job type instead of always defaulting the select to the
+// first option.
+$job_type_options = job_type_options_html($job['type']);
+if ($job['type'] && !in_array(strtolower($job['type']), array_map('strtolower', job_types()), true)) {
+    // A legacy value outside the enum still needs to be visible, otherwise
+    // opening the form would quietly change the posting's type.
+    $job_type_options .= "<option value='" . e($job['type']) . "' selected>" . e($job['type']) . "</option>";
+}
+
 render('employer/edit-job.html', [
     'company_name' => 'My Company',
     'job_title' => $job['title'],
     'location' => $job['location'],
-    'vacancies' => $job['vacancy'],
-    'min_salary' => $job['salary_min'],
-    'max_salary' => $job['salary_max'],
+    'vacancies' => $job['vacancy'] ?? '',
+    // render() skips NULL values, which would leave the literal {{min_salary}}
+    // text sitting in the input. Saving that form would then push the
+    // placeholder into the DECIMAL column, where MySQL silently stores 0.00.
+    'min_salary' => $job['salary_min'] ?? '',
+    'max_salary' => $job['salary_max'] ?? '',
     'description' => $job['description'],
-    'responsibilities_raw' => $job['responsibilities'],
-    'education' => $job['education'],
-    'experience' => $job['experience'],
-    'skills' => $job['skills'],
-    'benefits_raw' => $job['benefits'],
-    'deadline' => $job['deadline'],
-    'category_options' => $category_options,
-    'job_types' => ['Full-time', 'Part-time', 'Internship', 'Remote']
+    // Every column below is nullable, so each needs the same NULL guard.
+    'responsibilities_raw' => $job['responsibilities'] ?? '',
+    'education' => $job['education'] ?? '',
+    'experience' => $job['experience'] ?? '',
+    'skills' => $job['skills'] ?? '',
+    'benefits_raw' => $job['benefits'] ?? '',
+    'deadline' => $job['deadline'] ? date('Y-m-d', strtotime($job['deadline'])) : '',
+    'category_options' => new RawHtml($category_options),
+    'notification' => flash_message(),
+    'job_type_options' => new RawHtml($job_type_options),
+    'job_id' => $job['id']
 ]);

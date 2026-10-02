@@ -24,19 +24,21 @@
     </aside>
     <main class="dash-main">
         <div class="page-title">Edit Job: {{job_title}}</div>
-        <div class="page-sub"><a href="?role=employer&page=manage-jobs">← Back to Manage Jobs</a></div>
-        <form class="dash-form" method="POST" action="?role=employer&page=edit-job">
+        <div class="page-sub"><a href="?role=employer&page=manage-jobs">&larr; Back to Manage Jobs</a></div>
+        {{notification}}
+        <form class="dash-form" method="POST" action="?role=employer&page=edit-job&amp;id={{job_id}}">
+            <input type="hidden" name="job_id" value="{{job_id}}">
             <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
                 <h3>Basic Information</h3>
                 <div class="form-row">
-                    <div><label>Job Title</label><input type="text" name="job_title" value="{{job_title}}"></div>
+                    <div><label>Job Title</label><input type="text" name="job_title" value="{{job_title}}" required></div>
                     <div><label>Category</label><select name="category">{{category_options}}</select></div>
                 </div>
-                <div class="form-row">
-                    <div><label>Number of Vacancies</label><input type="number" name="vacancies" value="{{vacancies}}"></div>
-                    <div><label>Location</label><input type="text" name="location" value="{{location}}"></div>
+                <div class="form-row" style="grid-template-columns:1fr 1fr 1fr;">
+                    <div><label>Number of Vacancies</label><input type="number" name="vacancies" min="1" value="{{vacancies}}"></div>
+                    <div><label>Location</label><input type="text" name="location" value="{{location}}" required></div>
                     <div><label>Job Type</label>
-                        <select name="job_type"><option>Full-time</option><option>Part-time</option><option>Contract</option><option>Remote</option></select>
+                        <select name="job_type">{{job_type_options}}</select>
                     </div>
                 </div>
                 <h3 style="margin:16px 0 12px;">Compensation</h3>
@@ -58,6 +60,8 @@
                 <input type="text" name="skills" value="{{skills}}">
                 <h3 style="margin:16px 0 12px;">Benefits (one per line)</h3>
                 <textarea name="benefits" rows="4">{{benefits_raw}}</textarea>
+                <label>Application Deadline</label>
+                <input type="date" name="deadline" value="{{deadline}}">
                 <div style="display:flex;gap:12px;margin-top:16px;">
                     <button type="submit" class="btn btn-primary">Update Job</button>
                     <a href="?role=employer&page=manage-jobs" class="btn btn-outline">Cancel</a>

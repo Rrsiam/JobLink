@@ -9,7 +9,9 @@ $user = get_user_data();
 $profile = $db->prepare("SELECT * FROM applicant_profiles WHERE user_id = ?")->execute([$user_id])->fetch();
 
 // Handle profile update
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_update'])) {
+// This page posts two separate forms: the profile form (btn_update) and the
+// password form (btn_password). Both have to reach the handlers below.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['btn_update']) || isset($_POST['btn_password']))) {
     $full_name = trim($_POST['full_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
@@ -22,6 +24,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_update'])) {
     $skills = trim($_POST['skills'] ?? '');
     $certifications = trim($_POST['certifications'] ?? '');
     $languages = trim($_POST['languages'] ?? '');
+
+    // Password change is handled here rather than on Settings.
+    if (!empty($_POST['btn_password'])) {
+        $current = (string)($_POST['current_password'] ?? '');
+        $new = (string)($_POST['new_password'] ?? '');
+        $confirm = (string)($_POST['confirm_password'] ?? '');
+        $user_row = get_user_data();
+
+        if (!password_verify($current, $user_row['password'])) {
+            $_SESSION['error'] = 'Current password is incorrect.';
+        } elseif (strlen($new) < 6) {
+            $_SESSION['error'] = 'New password must be at least 6 characters.';
+        } elseif ($new !== $confirm) {
+            $_SESSION['error'] = 'Passwords do not match.';
+        } else {
+            $db->prepare("UPDATE users SET password = ? WHERE id = ?")
+                ->execute([password_hash($new, PASSWORD_DEFAULT), $user_id]);
+            $_SESSION['success'] = 'Password updated successfully.';
+        }
+        header('Location: ?role=applicant&page=edit-profile');
+        exit;
+    }
+
+    // The password branch above always exits, so reaching here means only the
+    // profile form was submitted. Bail out rather than validating empty input.
+    if (!isset($_POST['btn_update'])) {
+        header('Location: ?role=applicant&page=edit-profile');
+        exit;
+    }
 
     if (empty($full_name) || empty($email)) {
         $_SESSION['error'] = 'Name and email are required.';
@@ -68,6 +99,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_update'])) {
 }
 
 $gender = $profile['gender'] ?? '';
+
+// Resume state, so Edit Profile can show an inline preview too.
+$resume_name = $profile['resume'] ?? '';
+$has_resume = !empty($resume_name);
+
 $gender_map = ['none' => '', 'female' => '', 'male' => '', 'other' => ''];
 $gender_key = strtolower(trim($gender));
 if (isset($gender_map[$gender_key]) && $gender_key !== '') {
@@ -76,21 +112,26 @@ if (isset($gender_map[$gender_key]) && $gender_key !== '') {
     $gender_map['none'] = 'selected';
 }
 
+// Escaped here and marked RawHtml: render() treats any scalar containing '<'
+// as pre-built markup, so passing raw DB values would let them inject HTML
+// into the value="" attributes and textareas.
 render('applicant/edit-profile.html', [
-    'name' => $user['name'],
-    'email' => $user['email'],
-    'phone' => $user['phone'] ?? '',
-    'title' => $profile['professional_title'] ?? '',
-    'location' => $profile['address'] ?? '',
-    'about' => $profile['career_objective'] ?? '',
-    'education' => $profile['education'] ?? '',
-    'experience' => $profile['experience'] ?? '',
-    'skills' => $profile['skills'] ?? '',
-    'certifications' => $profile['certifications'] ?? '',
-    'languages' => $profile['languages'] ?? '',
+    'name' => new RawHtml(e($user['name'])),
+    'email' => new RawHtml(e($user['email'])),
+    'phone' => new RawHtml(e($user['phone'] ?? '')),
+    'title' => new RawHtml(e($profile['professional_title'] ?? '')),
+    'location' => new RawHtml(e($profile['address'] ?? '')),
+    'about' => new RawHtml(e($profile['career_objective'] ?? '')),
+    'education' => new RawHtml(e($profile['education'] ?? '')),
+    'experience' => new RawHtml(e($profile['experience'] ?? '')),
+    'skills' => new RawHtml(e($profile['skills'] ?? '')),
+    'certifications' => new RawHtml(e($profile['certifications'] ?? '')),
+    'languages' => new RawHtml(e($profile['languages'] ?? '')),
     'gender_none' => $gender_map['none'],
     'gender_female' => $gender_map['female'],
     'gender_male' => $gender_map['male'],
     'gender_other' => $gender_map['other'],
-    'notification' => flash_message()
+    'account_type' => 'Applicant',
+    'resume_file' => new RawHtml(e($resume_name)),
+    'notification' => new RawHtml(flash_message())
 ]);

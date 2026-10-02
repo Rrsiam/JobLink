@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Profile – JobLink</title>
     <link rel="stylesheet" href="public/css/global.css">
-    <link rel="stylesheet" href="public/css/employer.css">
+    <link rel="stylesheet" href="public/css/employer.css?v=7">
 </head>
 <body>
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
         <a href='?role=employer&page=dashboard' class="logo">Job<span>Link</span></a>
         <div class="user-info"><div class="name">{{company_name}}</div><div class="role">Employer</div></div>
-        <nav>
+        <nav aria-label="Employer">
             <a href="?role=employer&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
             <a href="?role=employer&page=company-profile" class="nav-item active"><span class="icon">🏢</span><span>Company Profile</span></a>
             <a href="?role=employer&page=post-job" class="nav-item"><span class="icon">➕</span><span>Post a Job</span></a>
@@ -23,35 +23,53 @@
         <a href="?page=logout" class="logout">🚪 Logout</a>
     </aside>
     <main class="dash-main">
-        <div class="page-title">{{company_name}}</div>
-        <div class="page-sub"><a href="?role=employer&page=edit-company" class="btn btn-outline btn-sm">Edit Profile</a></div>
-        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
-            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-                {{profile_logo}}
-                <div>
-                    <h1 style="font-size:24px;">{{company_name}}</h1>
-                    <div class="text-muted">{{industry}} · {{location}} · {{size}} employees</div>
-                    <div class="text-muted">{{website}} · {{phone}} · {{email}}</div>
+        <div class="cp-page">
+            <h1 class="page-title">Company Profile</h1>
+            <p class="page-sub">How your company appears to candidates</p>
+            {{flash}}
+
+            <section class="cp-hero">
+                <div class="cp-hero-cover"></div>
+                <div class="cp-hero-body">
+                    <div class="cp-logo">{{logo}}</div>
+                    <div class="cp-identity">
+                        <div class="cp-name-row">
+                            <h2 class="cp-name">{{company_name}}</h2>
+                            {{verified_badge}}
+                        </div>
+                        <p class="cp-summary">{{summary}}</p>
+                    </div>
+                    <div class="cp-hero-actions">
+                        <a href="?role=employer&amp;page=edit-company" class="btn btn-primary btn-sm">Edit Profile</a>
+                        <a href="?role=employer&amp;page=post-job" class="btn btn-outline btn-sm">Post a Job</a>
+                    </div>
                 </div>
-            </div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>About the Company</strong><br>{{about}}</div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>Benefits &amp; Perks</strong><br>{{benefits}}</div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                <div><strong>Industry</strong><br>{{industry}}</div>
-                <div><strong>Company Size</strong><br>{{size}}</div>
-                <div><strong>Founded</strong><br>{{founded}}</div>
-                <div><strong>Location</strong><br>{{location}}</div>
-            </div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>Quick Stats</strong><br>
-                Active Openings: {{openings}} · Total Applicants: {{total_applicants}} · Hires This Year: {{hires}}
-            </div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>Current Job Openings</strong>
-                <div class="job-grid" style="grid-template-columns:1fr 1fr;margin-top:12px;">{{open_jobs}}</div>
+            </section>
+
+            <div class="cp-grid">
+
+                <section class="cp-card">
+                    <div class="cp-card-head">
+                        <h2 class="cp-card-title"><span class="icon">&#127970;</span> About the Company</h2>
+                        <a href="?role=employer&amp;page=edit-company" class="cp-card-link">Edit</a>
+                    </div>
+                    <div class="cp-body">{{about}}</div>
+                </section>
+
+                <section class="cp-card">
+                    <div class="cp-card-head">
+                        <h2 class="cp-card-title"><span class="icon">&#128205;</span> Company Details</h2>
+                    </div>
+                    <dl class="cp-fields">{{details}}</dl>
+                </section>
+
+                <section class="cp-card">
+                    <div class="cp-card-head">
+                        <h2 class="cp-card-title"><span class="icon">&#128222;</span> Contact</h2>
+                    </div>
+                    <div class="cp-contacts">{{contacts}}</div>
+                </section>
+
             </div>
         </div>
     </main>

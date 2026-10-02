@@ -33,17 +33,19 @@ $similar_html = '';
 foreach ($similar as $sj) {
     $similar_html .= "
     <div class='job-card'>
-        <div class='title'>{$sj['title']}</div>
-        <div class='company'>{$sj['employer_name']}</div>
-        <div class='meta'><span>📍 {$sj['location']}</span></div>
-        <a href='?page=job-details&id={$sj['id']}' class='btn btn-primary btn-sm'>View</a>
+        <div class='title'>" . e($sj['title']) . "</div>
+        <div class='company'>" . e($sj['employer_name']) . "</div>
+        <div class='meta'><span>📍 " . e($sj['location']) . "</span></div>
+        <a href='?page=job-details&id=" . (int)$sj['id'] . "' class='btn btn-primary btn-sm'>View</a>
     </div>";
 }
 
 $tags = '';
 if ($job['skills']) {
     foreach (explode(',', $job['skills']) as $skill) {
-        $tags .= "<span>" . trim($skill) . "</span>";
+        if (trim($skill) !== '') {
+            $tags .= "<span>" . e(trim($skill)) . "</span>";
+        }
     }
 }
 
@@ -75,6 +77,22 @@ if (is_logged_in() && get_user_role() === 'applicant') {
     $is_saved = $stmt->fetch() ? true : false;
 }
 
+// Apply / Save are gated: guests and non-applicants get sent to sign in first
+$apply_target = '?role=applicant&page=job-details&id=' . (int)$id . '&apply=1';
+if (is_logged_in() && get_user_role() === 'applicant') {
+    $apply_url = $apply_target;
+    $apply_label = 'Apply Now';
+} elseif (is_logged_in()) {
+    $apply_url = '?role=' . get_user_role() . '&page=dashboard';
+    $apply_label = 'Apply Now';
+} else {
+    $apply_url = '?page=sign-in&next=' . rawurlencode($apply_target);
+    $apply_label = 'Apply Now';
+}
+
+$save_url = '?page=sign-in&next=' . rawurlencode('?role=applicant&page=job-details&id=' . (int)$id . '&save=1');
+$save_label = $is_saved ? 'Saved' : 'Save Job';
+
 render('guest/job-details.html', [
     'job_title' => $job['title'],
     'company' => $job['employer_name'],
@@ -84,11 +102,15 @@ render('guest/job-details.html', [
     'experience' => $job['experience'] ?: 'Not specified',
     'posted' => date('M d, Y', strtotime($job['created_at'])),
     'deadline' => date('M d, Y', strtotime($job['deadline'])),
-    'about_text' => nl2br(htmlspecialchars($job['description'])),
-    'responsibilities' => $responsibilities,
-    'tags' => $tags,
-    'benefits' => $benefits_html,
-    'similar_jobs' => $similar_html,
+      'about_text' => new RawHtml(nl2br(e($job['description']))),
+      'responsibilities' => new RawHtml($responsibilities),
+      'tags' => new RawHtml($tags),
+      'benefits' => new RawHtml($benefits_html),
+      'similar_jobs' => new RawHtml($similar_html),
     'job_id' => $job['id'],
-    'is_saved' => $is_saved ? 'true' : 'false'
+    'is_saved' => $is_saved ? 'true' : 'false',
+    'apply_url' => $apply_url,
+    'apply_label' => $apply_label,
+    'save_url' => $save_url,
+    'save_label' => $save_label
 ]);

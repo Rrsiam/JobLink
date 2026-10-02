@@ -11,13 +11,14 @@
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
         <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
-        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Admin</div></div>
         <nav>
             <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
             <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
             <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
             <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
             <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
             <a href="?role=admin&page=categories" class="nav-item active"><span class="icon">📂</span><span>Categories</span></a>
             <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
             <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
@@ -27,9 +28,12 @@
     <main class="dash-main">
         <div class="page-title">Manage Categories</div>
         <div class="page-sub">{{total_categories}} job categories</div>
-        <div style="margin-bottom:16px;">
-            <button class="btn btn-primary" id="add-category">+ Add Category</button>
-        </div>
+        {{notification}}
+        <form method="POST" action="?role=admin&amp;page=categories" style="margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="hidden" name="add_category" value="1">
+            <input type="text" name="name" placeholder="Category name, e.g. Healthcare" required style="flex:1;min-width:220px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;">
+            <button type="submit" class="btn btn-primary">+ Add Category</button>
+        </form>
         <div class="table-wrap">
             <table>
                 <thead><tr><th>Icon</th><th>Category Name</th><th>Job Count</th><th>Status</th><th>Actions</th></tr></thead>

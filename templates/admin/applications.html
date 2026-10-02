@@ -11,13 +11,14 @@
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
         <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
-        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Admin</div></div>
         <nav>
             <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
             <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
             <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
             <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
             <a href="?role=admin&page=applications" class="nav-item active"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
             <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
             <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
             <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
@@ -27,17 +28,18 @@
     <main class="dash-main">
         <div class="page-title">Manage Applications</div>
         <div class="page-sub">{{total_applications}} total applications</div>
+        {{notification}}
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
-            <a href="#" class="btn btn-primary btn-sm">All</a>
-            <a href="#" class="btn btn-outline btn-sm">Pending</a>
-            <a href="#" class="btn btn-outline btn-sm">Under Review</a>
-            <a href="#" class="btn btn-outline btn-sm">Shortlisted</a>
-            <a href="#" class="btn btn-outline btn-sm">Accepted</a>
-            <a href="#" class="btn btn-outline btn-sm">Rejected</a>
+            {{status_tabs}}
         </div>
-        <div style="margin-bottom:16px;">
-            <input type="text" placeholder="Search applicant, job or company..." style="width:100%;max-width:400px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;">
-        </div>
+        <form method="GET" action="index.php" style="margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="hidden" name="role" value="admin">
+            <input type="hidden" name="page" value="applications">
+            <input type="hidden" name="status" value="{{status_filter}}">
+            <input type="text" name="search" value="{{search}}" placeholder="Search applicant, job or company..." style="flex:1;min-width:220px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;">
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+            <a href="?role=admin&amp;page=applications" class="btn btn-outline btn-sm">Reset</a>
+        </form>
         <div class="table-wrap">
             <table>
                 <thead><tr><th>Applicant</th><th>Job Title</th><th>Company</th><th>Applied Date</th><th>Status</th><th>Action</th></tr></thead>

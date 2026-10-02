@@ -25,11 +25,12 @@
     <main class="dash-main">
         <div class="page-title">{{job_title}}</div>
         <div class="page-sub"><a href="?role=employer&page=manage-jobs">← Back to Manage Jobs</a></div>
+        {{notification}}
         <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
             <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
                 <div>
                     <strong style="font-size:20px;">{{job_title}}</strong><br>
-                    <span class="badge badge-active">Active</span> · {{category}} · {{location}} · {{job_type}}
+                    <span class="badge badge-{{status_class}}">{{status}}</span> · {{category}} · {{location}} · {{job_type}}
                 </div>
                 <div>
                     <span class="text-muted">Posted {{posted_date}}</span><br>
@@ -38,9 +39,7 @@
             </div>
             <hr style="margin:16px 0;border-color:#e2e8f0;">
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                <a href="?role=employer&page=edit-job" class="btn btn-outline btn-sm">Edit Job</a>
-                <a href="#" class="btn btn-warning btn-sm">Close Job</a>
-                <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('Delete this job?')">Delete</a>
+                {{job_actions}}
             </div>
             <h3 style="margin:16px 0 8px;">Job Description</h3>
             <p>{{description}}</p>

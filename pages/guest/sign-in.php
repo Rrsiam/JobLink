@@ -12,4 +12,8 @@ if (is_logged_in()) {
 
 // Display login page
 $success = isset($_GET['account-deleted']) ? '<div class="form-success">Your account and all associated data have been deleted permanently.</div>' : '';
-render('guest/sign-in.html', ['error' => flash_message(), 'account_notice' => $success]);
+render('guest/sign-in.html', [
+    'error' => flash_message(),
+    'account_notice' => $success,
+    'next' => safe_next_url($_GET['next'] ?? '')
+]);

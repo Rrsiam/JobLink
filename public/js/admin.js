@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn-approve').forEach(btn => {
-        btn.addEventListener('click', () => alert('Approved (demo)'));
-    });
-    document.querySelectorAll('.btn-suspend').forEach(btn => {
-        btn.addEventListener('click', () => alert('Suspended (demo)'));
-    });
-    document.querySelector('#add-category')?.addEventListener('click', function() {
-        const name = prompt('Enter category name:');
-        if (name) alert(`Category "${name}" added (demo)`);
+    // Note buttons inside forms already confirm through their own onclick
+    // handler; anything still marked data-confirm is confirmed here.
+    document.querySelectorAll('a[data-confirm]').forEach(link => {
+        link.addEventListener('click', event => {
+            if (!window.confirm(link.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
     });
 });

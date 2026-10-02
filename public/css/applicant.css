@@ -30,12 +30,122 @@ body { font-family:'Inter',system-ui,sans-serif; background:#f1f5f9; }
 .badge-active { background:#dcfce7; color:#16a34a; }
 .badge-pending { background:#fef3c7; color:#d97706; }
 .badge-hired { background:#dcfce7; color:#16a34a; }
-.profile-card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:24px; margin-bottom:24px; }
-.profile-card .avatar { width:80px; height:80px; border-radius:50%; background:#e2e8f0; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; color:#475569; margin-bottom:12px; }
+/* === Profile page === */
+/* Content is width-capped so lines stay readable on wide monitors instead of
+   stretching the full width of a desktop viewport. */
+.pf-page { max-width:1080px; margin:0 auto; }
+.pf-hero { background:#fff; border:1px solid #e2e8f0; border-radius:18px; overflow:hidden; margin-bottom:22px; box-shadow:0 4px 20px rgba(15,23,42,0.06); }
+.pf-hero-cover { height:120px; background:linear-gradient(125deg,#1d4ed8 0%,#3b82f6 50%,#7dd3fc 100%); position:relative; }
+.pf-hero-cover::after { content:""; position:absolute; inset:0; background:radial-gradient(circle at 78% 22%,rgba(255,255,255,.28),transparent 55%); }
+/* Three fixed tracks, vertically centred, so nothing can overlap the cover or
+   drift out of alignment at any width. */
+.pf-hero-body { display:grid; grid-template-columns:104px minmax(0,1fr) auto; align-items:start; gap:0 24px; padding:26px 28px; }
+/* No negative margin: the avatar sits fully below the cover instead of
+   overlapping it by 48px. */
+.pf-avatar { width:104px; height:104px; border-radius:50%; background:linear-gradient(135deg,#dbeafe,#bfdbfe); border:5px solid #fff; box-shadow:0 6px 18px rgba(15,23,42,0.16); display:flex; align-items:center; justify-content:center; font-size:38px; font-weight:700; color:#1d4ed8; overflow:hidden; }
+.pf-avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+/* min-width:0 lets long words wrap inside the grid track rather than forcing
+   the whole row wider than its container. */
+.pf-identity { min-width:0; }
+.pf-name { font-size:26px; font-weight:700; color:#0f172a; line-height:1.2; letter-spacing:-.4px; overflow-wrap:anywhere; }
+.pf-headline { display:inline-block; font-size:14px; color:#1d4ed8; font-weight:600; background:#eff6ff; border:1px solid #dbeafe; border-radius:20px; padding:3px 12px; margin-top:6px; }
+.pf-contacts { display:flex; flex-wrap:wrap; gap:8px 10px; margin-top:14px; }
+.pf-contact { display:flex; align-items:center; gap:9px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:6px 12px; min-width:0; max-width:100%; }
+.pf-contact-icon { font-size:15px; flex-shrink:0; }
+.pf-contact-body { display:flex; flex-direction:column; line-height:1.35; min-width:0; }
+.pf-contact-label { font-size:10px; color:#94a3b8; text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+.pf-contact-value { color:#334155; font-size:13px; overflow-wrap:anywhere; }
+/* Ring and actions share one right-hand column, so they stay aligned with each
+   other at every width and the buttons sit on a common baseline. */
+.pf-hero-side { display:flex; flex-direction:column; align-items:center; gap:14px; }
+.pf-hero-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+.pf-ring { position:relative; width:104px; height:104px; flex-shrink:0; }
+.pf-ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+.pf-ring circle { fill:none; stroke-width:7; }
+.pf-ring-track { stroke:#e2e8f0; }
+.pf-ring-fill { stroke:#2563eb; stroke-linecap:round; stroke-dasharray:251.2; transition:stroke-dashoffset .6s ease; stroke-dashoffset:251.2; }
+/* One step per reachable completion level, so the ring needs no inline style.
+   251.2 is the circumference of r=40 (2*PI*r). */
+.pf-ring-fill[data-percent="0"]   { stroke-dashoffset:251.2; }
+.pf-ring-fill[data-percent="17"]  { stroke-dashoffset:208.6; }
+.pf-ring-fill[data-percent="33"]  { stroke-dashoffset:167.9; }
+.pf-ring-fill[data-percent="50"]  { stroke-dashoffset:125.6; }
+.pf-ring-fill[data-percent="67"]  { stroke-dashoffset:83.7; }
+.pf-ring-fill[data-percent="83"]  { stroke-dashoffset:43.3; }
+.pf-ring-fill[data-percent="100"] { stroke-dashoffset:0; }
+.pf-ring-label { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.2; }
+.pf-ring-label strong { font-size:21px; color:#0f172a; }
+.pf-ring-label span { font-size:10px; color:#94a3b8; text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+/* Wider main track; the side column is capped so a narrow track does not stretch
+   skill tags into one long line. */
+.pf-grid { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(0,1fr); gap:20px; align-items:start; }
+.pf-col-main, .pf-col-side { display:flex; flex-direction:column; min-width:0; }
+.pf-card { position:relative; background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:22px 24px; margin-bottom:20px; box-shadow:0 2px 10px rgba(15,23,42,0.05); transition:box-shadow .2s, border-color .2s; }
+.pf-card:last-child { margin-bottom:0; }
+.pf-card:hover { box-shadow:0 6px 22px rgba(15,23,42,0.09); border-color:#dbe3ec; }
+/* Title and Edit pill share one flex row. The pill used to be absolutely
+   positioned, which let long titles such as "Certifications" run underneath it. */
+.pf-card-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; }
+.pf-card-title { display:flex; align-items:center; gap:9px; font-size:14px; font-weight:700; color:#0f172a; letter-spacing:.2px; text-transform:uppercase; min-width:0; }
+.pf-card-title .icon { width:28px; height:28px; border-radius:8px; background:#eff6ff; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.pf-card-link { flex-shrink:0; font-size:13px; font-weight:600; color:#2563eb; background:#eff6ff; border-radius:20px; padding:3px 12px; }
+.pf-card-link:hover { background:#dbeafe; }
+/* Caps measure at roughly 75 characters so body copy stays readable. */
+.pf-body { font-size:14px; color:#475569; line-height:1.75; max-width:68ch; }
+.pf-list { list-style:none; }
+.pf-list li { position:relative; font-size:14px; color:#475569; line-height:1.65; padding:8px 0 8px 20px; }
+.pf-list li + li { border-top:1px solid #f1f5f9; }
+.pf-list li::before { content:""; position:absolute; left:3px; top:16px; width:7px; height:7px; border-radius:50%; background:#93c5fd; box-shadow:0 0 0 3px #eff6ff; }
+.pf-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.pf-tag { background:#f8fafc; color:#334155; border:1px solid #e2e8f0; border-radius:20px; padding:5px 13px; font-size:13px; font-weight:500; transition:all .2s; }
+.pf-tag:hover { background:#2563eb; border-color:#2563eb; color:#fff; }
+.pf-empty { display:inline-block; font-size:14px; color:#94a3b8; font-style:italic; background:#f8fafc; border:1px dashed #e2e8f0; border-radius:8px; padding:8px 12px; }
+/* Resume row: filename plus actions, shared by Profile, Resume and Edit Profile. */
+.resume-row { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+.resume-row-text { display:flex; flex-direction:column; gap:3px; min-width:0; flex:1 1 180px; }
+.resume-row-text strong { font-size:14px; color:#0f172a; font-weight:600; overflow-wrap:anywhere; }
+.resume-row-text span { font-size:12.5px; color:#64748b; }
+.resume-row-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.btn-sm { padding:6px 12px; font-size:13px; }
+/* Resume upload page */
+.rs-grid { display:grid; grid-template-columns:1.15fr 1fr; gap:24px; align-items:start; }
+.rs-card { background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:24px; box-shadow:0 2px 10px rgba(15,23,42,0.05); }
+.rs-card h3 { margin:0 0 16px; font-size:15px; font-weight:700; color:#0f172a; }
+.rs-drop { border:2px dashed #e2e8f0; border-radius:12px; padding:34px 24px; text-align:center; transition:border-color .2s, background .2s; }
+.rs-drop.is-dragging { border-color:#2563eb; background:#eff6ff; }
+.rs-drop-icon { font-size:44px; margin-bottom:6px; }
+.rs-drop p { margin:4px 0; }
+.rs-drop-hint { font-size:13px; }
+.rs-drop input[type="file"] { display:block; margin:14px auto; font-size:13px; }
+.rs-file-name { font-size:13px; margin:8px 0 16px; overflow-wrap:anywhere; }
+.rs-current { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-top:18px; }
+.rs-current-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px; }
+.rs-badge { background:#dbeafe; color:#1d4ed8; border-radius:20px; padding:2px 10px; font-size:11px; font-weight:700; letter-spacing:.4px; }
+.rs-meta { display:flex; align-items:center; gap:8px; font-size:12.5px; color:#94a3b8; margin-top:4px; }
+.rs-current-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.rs-tips { list-style:none; padding:0; margin:0 0 18px; }
+.rs-tips li { position:relative; font-size:14px; color:#334155; line-height:1.6; padding:7px 0 7px 20px; }
+.rs-tips li + li { border-top:1px solid #f1f5f9; }
+.rs-tips li::before { content:""; position:absolute; left:3px; top:15px; width:7px; height:7px; border-radius:50%; background:#93c5fd; box-shadow:0 0 0 3px #eff6ff; }
+.rs-note { background:#f8fafc; border-radius:10px; padding:12px; font-size:13px; margin-top:12px; }
+/* Account inputs are read-only here, so they should not look editable. */
+.dash-form input:disabled { background:#f8fafc; color:#64748b; cursor:not-allowed; }
+/* Settings: pointer to where account details now live. */
+.settings-hint { background:#eff6ff; border:1px solid #dbeafe; color:#1e40af; border-radius:12px; padding:14px 18px; font-size:14px; margin:16px 0 20px; }
+.settings-hint strong { display:block; color:#1e3a8a; margin-bottom:2px; }
+.settings-hint a { color:#2563eb; font-weight:600; }
 .dash-form label { display:block; font-weight:500; font-size:13px; margin-bottom:4px; color:#334155; }
-.dash-form input, .dash-form select, .dash-form textarea { width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:14px; margin-bottom:16px; font-family:inherit; }
+.dash-form input:not([type="checkbox"]):not([type="radio"]), .dash-form select, .dash-form textarea { width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:14px; margin-bottom:16px; font-family:inherit; }
 .dash-form input:focus { border-color:#2563eb; outline:none; }
 .dash-form .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 .danger-zone { border:1px solid #fee2e2; background:#fef2f2; padding:20px; border-radius:12px; margin-top:24px; }
 .danger-zone h4 { color:#dc2626; }
-@media (max-width:768px) { .dash-sidebar { width:60px; padding:16px 8px; } .dash-sidebar .logo, .dash-sidebar .user-info .name, .dash-sidebar .user-info .role, .dash-sidebar .nav-item span:not(.icon) { display:none; } .dash-sidebar .nav-item { justify-content:center; padding:10px; } .dash-main { padding:16px; } .dash-form .form-row { grid-template-columns:1fr; } }
+@media (max-width:1100px) { .pf-grid { grid-template-columns:1fr; } .rs-grid { grid-template-columns:1fr; } }
+/* Below this the ring plus two buttons no longer fit beside the identity, so the
+   side column drops to its own full-width row rather than squeezing the name. */
+@media (max-width:820px) {
+  .pf-hero-body { grid-template-columns:104px minmax(0,1fr); }
+  .pf-hero-side { grid-column:1 / -1; flex-direction:row; justify-content:space-between; align-items:center; padding-top:20px; margin-top:20px; border-top:1px solid #f1f5f9; }
+  .pf-hero-actions { justify-content:flex-end; }
+}
+@media (max-width:768px) { .dash-sidebar { width:60px; padding:16px 8px; } .dash-sidebar .logo, .dash-sidebar .user-info .name, .dash-sidebar .user-info .role, .dash-sidebar .nav-item span:not(.icon) { display:none; } .dash-sidebar .nav-item { justify-content:center; padding:10px; } .dash-main { padding:16px; } .dash-form .form-row { grid-template-columns:1fr; } .pf-hero-cover { height:96px; } .pf-hero-body { grid-template-columns:1fr; justify-items:start; padding:20px 18px; } .pf-avatar { width:88px; height:88px; } .pf-name { font-size:22px; } .pf-hero-side { flex-direction:column; align-items:flex-start; gap:16px; } .pf-hero-actions { justify-content:flex-start; } .pf-ring { width:88px; height:88px; } .pf-card { padding:18px; } }

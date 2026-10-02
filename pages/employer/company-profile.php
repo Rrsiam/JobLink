@@ -6,9 +6,9 @@ $user_id = get_user_id();
 $db = getDB();
 
 $profile = $db->prepare("
-    SELECT u.*, ep.* 
-    FROM users u 
-    JOIN employer_profiles ep ON u.id = ep.user_id 
+    SELECT u.*, ep.*
+    FROM users u
+    JOIN employer_profiles ep ON u.id = ep.user_id
     WHERE u.id = ?
 ")->execute([$user_id])->fetch();
 
@@ -17,56 +17,99 @@ if (!$profile) {
     exit;
 }
 
-// Get jobs
-$jobs = $db->prepare("SELECT * FROM jobs WHERE employer_id = ? ORDER BY created_at DESC")->execute([$user_id])->fetchAll();
-
-$open_jobs = '';
-foreach ($jobs as $job) {
-    $apps = $db->prepare("SELECT COUNT(*) FROM applications WHERE job_id = ?")->execute([$job['id']])->fetchColumn();
-    $open_jobs .= "
-    <div class='job-card'>
-        <div class='title'>{$job['title']}</div>
-        <div class='meta'>
-            <span>📌 {$job['type']}</span>
-            <span>📍 {$job['location']}</span>
-            <span>👥 {$apps} applicants</span>
-        </div>
-        <span class='badge badge-" . ($job['status'] === 'active' ? 'active' : 'closed') . "'>" . ucfirst($job['status']) . "</span>
-        <a href='?role=employer&page=job-details&id={$job['id']}' class='btn btn-primary btn-sm'>View</a>
-    </div>";
+$name = trim((string)($profile['company_name'] ?? ''));
+$industry = trim((string)($profile['industry'] ?? ''));
+$address = trim((string)($profile['address'] ?? ''));
+$website = trim((string)($profile['website'] ?? ''));
+$size = trim((string)($profile['company_size'] ?? ''));
+$description = trim((string)($profile['description'] ?? ''));
+$phone = trim((string)($profile['phone'] ?? ''));
+$email = trim((string)($profile['email'] ?? ''));
+$verified = !empty($profile['verified']);
+if ($name === '') {
+    $name = 'Your company';
 }
 
-$total_applicants = $db->prepare("
-    SELECT COUNT(*) FROM applications a 
-    JOIN jobs j ON a.job_id = j.id 
-    WHERE j.employer_id = ?
-")->execute([$user_id])->fetchColumn();
+$logo = trim((string)($profile['logo'] ?? ''));
+$logo_exists = $logo !== '' && is_file(__DIR__ . '/../../uploads/logos/' . $logo);
+// Initials come from the first two letters or digits, so a name that starts
+// with punctuation still gets a sensible tile rather than a stray symbol.
+$initials = mb_strtoupper(mb_substr((string)preg_replace('/[^\p{L}\p{N}]+/u', '', $name), 0, 2));
+if ($initials === '') {
+    $initials = 'CO';
+}
+$logo_html = $logo_exists
+    ? '<img src="uploads/logos/' . e($logo) . '" alt="' . e($name) . ' logo">'
+    : e($initials);
 
-$hires = $db->prepare("
-    SELECT COUNT(*) FROM applications a 
-    JOIN jobs j ON a.job_id = j.id 
-    WHERE j.employer_id = ? AND a.status = 'hired'
-")->execute([$user_id])->fetchColumn();
+// Page controllers are included rather than include_once'd, so the small
+// builders below are closures: a repeated include would fatal on a
+// redeclared function.
+$dash = function ($value) {
+    $value = trim((string)$value);
+    return $value !== '' ? e($value) : '<span class="cp-void">&mdash;</span>';
+};
 
-$profile_logo_html = $profile['logo']
-    ? "<img src='uploads/logos/{$profile['logo']}' alt='{$profile['company_name']} logo' style='width:72px;height:72px;object-fit:contain;border-radius:12px;background:#fff;'>"
-    : "<div style='width:72px;height:72px;background:#e2e8f0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:24px;color:#475569;'>" . substr($profile['company_name'], 0, 2) . "</div>";
+// Short factual line under the company name. The address is left out because
+// it is usually a long geocoded string; it has its own field below. When
+// nothing short is filled in it points at the gap rather than leaving an empty
+// band.
+$summary_bits = array_filter([$industry, $size], 'strlen');
+if ($summary_bits === [] && $address !== '') {
+    $summary_bits = [$address];
+}
+$summary_html = $summary_bits !== []
+    ? e(implode(' &middot; ', $summary_bits))
+    : '<span class="cp-void">Add an industry, location and company size so candidates know who you are</span>';
+
+$about_html = $description !== ''
+    ? nl2br(e($description))
+    : '<span class="cp-empty">No company description yet.</span>';
+
+// Company details card: one definition list, so the grid is real markup
+// rather than two lists stacked to fake two columns.
+$details_html = '';
+$member_since = strtotime((string)($profile['created_at'] ?? ''));
+$detail_fields = [
+    'Industry'     => $industry,
+    'Company Size' => $size,
+    'Headquarters' => $address,
+    'Member Since' => $member_since === false ? '' : date('M j, Y', $member_since),
+];
+foreach ($detail_fields as $label => $value) {
+    $details_html .= '<div><dt>' . e($label) . '</dt><dd>' . $dash($value) . '</dd></div>';
+}
+
+// Contact rows: real links where a target exists, and blank entries are
+// dropped so the card never shows placeholders.
+$contacts_html = '';
+$contact_rows = [
+    ['&#127760;', 'Website', $website !== '' ? '<a class="cp-link" href="' . e(preg_match('#^https?://#i', $website) ? $website : 'http://' . $website) . '" rel="noopener noreferrer" target="_blank">' . e($website) . '</a>' : ''],
+    ['&#128222;', 'Phone', $phone !== '' ? '<a class="cp-link" href="tel:' . e(preg_replace('/[^0-9+]/', '', $phone)) . '">' . e($phone) . '</a>' : ''],
+    ['&#9993;', 'HR Email', $email !== '' ? '<a class="cp-link" href="mailto:' . e($email) . '">' . e($email) . '</a>' : ''],
+];
+foreach ($contact_rows as [$icon, $label, $value_html]) {
+    if ($value_html === '') {
+        continue;
+    }
+    $contacts_html .= '<div class="cp-contact">'
+        . '<span class="cp-contact-icon">' . $icon . '</span>'
+        . '<span class="cp-contact-body">'
+        . '<span class="cp-contact-label">' . e($label) . '</span>'
+        . '<span class="cp-contact-value">' . $value_html . '</span>'
+        . '</span></div>';
+}
+if ($contacts_html === '') {
+    $contacts_html = '<span class="cp-empty">No contact details added yet.</span>';
+}
 
 render('employer/company-profile.html', [
-    'company_name' => $profile['company_name'],
-    'initials' => substr($profile['company_name'], 0, 2),
-    'profile_logo' => $profile_logo_html,
-    'industry' => $profile['industry'],
-    'location' => $profile['address'],
-    'size' => $profile['company_size'] ?: 'Not specified',
-    'website' => $profile['website'] ?: '#',
-    'phone' => $profile['phone'] ?? '',
-    'email' => $profile['email'],
-    'about' => nl2br(htmlspecialchars($profile['description'] ?? '')),
-    'benefits' => $profile['benefits'] ? str_replace("\n", '<br>', htmlspecialchars($profile['benefits'])) : 'Not specified',
-    'founded' => '2018',
-    'openings' => count($jobs),
-    'total_applicants' => $total_applicants,
-    'hires' => $hires,
-    'open_jobs' => $open_jobs
+    'company_name' => new RawHtml(e($name)),
+    'logo'         => new RawHtml($logo_html),
+    'verified_badge' => new RawHtml($verified ? '<span class="cp-verified">&#10004; Verified</span>' : ''),
+    'summary'      => new RawHtml($summary_html),
+    'about'        => new RawHtml($about_html),
+    'details'      => new RawHtml($details_html),
+    'contacts'     => new RawHtml($contacts_html),
+    'flash'        => new RawHtml(flash_message()),
 ]);

@@ -52,25 +52,28 @@ $badges = [
 foreach ($applications as $app) {
     $badge = $badges[$app['status']] ?? 'badge-pending';
     $app_rows .= "<tr>
-        <td>{$app['job_title']}</td>
-        <td>{$app['company_name']}</td>
+        <td>" . e($app['job_title']) . "</td>
+        <td>" . e($app['company_name']) . "</td>
         <td>" . date('M d, Y', strtotime($app['created_at'])) . "</td>
-        <td><span class='badge $badge'>" . ucfirst($app['status']) . "</span></td>
-        <td><a href='?role=applicant&page=application-details&id={$app['id']}' class='btn btn-outline btn-sm'>View</a></td>
+        <td><span class='badge $badge'>" . e(ucfirst($app['status'])) . "</span></td>
+        <td><a href='?role=applicant&page=application-details&id=" . (int)$app['id'] . "' class='btn btn-outline btn-sm'>View</a></td>
     </tr>";
 }
 
 $recommended_html = '';
 foreach ($recommended as $job) {
+    $salary = $job['salary_min']
+        ? number_format($job['salary_min']) . ' - ' . number_format($job['salary_max'])
+        : 'Negotiable';
     $recommended_html .= "
     <div class='job-card'>
-        <div class='title'>{$job['title']}</div>
-        <div class='company'>{$job['employer_name']}</div>
+        <div class='title'>" . e($job['title']) . "</div>
+        <div class='company'>" . e($job['employer_name']) . "</div>
         <div class='meta'>
-            <span>📍 {$job['location']}</span>
-            <span>💰 " . ($job['salary_min'] ? number_format($job['salary_min']) . ' - ' . number_format($job['salary_max']) : 'Negotiable') . "</span>
+            <span>📍 " . e($job['location']) . "</span>
+            <span>💰 " . e($salary) . "</span>
         </div>
-        <a href='?role=applicant&page=job-details&id={$job['id']}' class='btn btn-primary btn-sm'>View</a>
+        <a href='?role=applicant&page=job-details&id=" . (int)$job['id'] . "' class='btn btn-primary btn-sm'>View</a>
     </div>";
 }
 
@@ -84,6 +87,6 @@ render('applicant/dashboard.html', [
     'profile_complete' => round($profile_complete),
     'total_apps' => count($applications),
     'shortlisted' => $shortlisted_count,
-    'recommended' => $recommended_html,
-    'application_rows' => $app_rows
+      'recommended' => new RawHtml($recommended_html),
+      'application_rows' => new RawHtml($app_rows)
 ]);

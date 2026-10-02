@@ -28,24 +28,6 @@
         {{notification}}
         <form class="dash-form" method="POST" action="?role=employer&page=settings">
             <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
-                <h3>Account Information</h3>
-                <div class="form-row">
-                    <div><label>Full Name</label><input type="text" value="{{full_name}}"></div>
-                    <div><label>Email Address</label><input type="email" value="{{email}}"></div>
-                </div>
-                <div class="form-row">
-                    <div><label>Phone Number</label><input type="tel" value="{{phone}}"></div>
-                    <div><label>Account Type</label><input type="text" value="Employer" disabled></div>
-                </div>
-            </div>
-            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
-                <h3>Change Password</h3>
-                <input type="password" name="current_password" placeholder="Current Password *">
-                <input type="password" name="new_password" placeholder="New Password *">
-                <input type="password" name="confirm_password" placeholder="Confirm Password *">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
                 <h3>Notification Preferences</h3>
                 <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox" checked> New Job Application</label>
                 <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;margin:8px 0;"><input type="checkbox" checked> Application Status Changes</label>

@@ -26,9 +26,14 @@
     <main class="dash-main">
         <div class="page-title">Saved Jobs</div>
         <div class="page-sub">{{saved_count}} jobs saved · {{matching_count}} matching current filters</div>
-        <div style="margin-bottom:16px;">
-            <input type="text" placeholder="Search saved jobs..." style="width:100%;max-width:400px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;">
-        </div>
+        {{notification}}
+        <form method="GET" action="index.php" style="margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="hidden" name="role" value="applicant">
+            <input type="hidden" name="page" value="saved-jobs">
+            <input type="text" name="search" value="{{search}}" placeholder="Search saved jobs..." style="flex:1;min-width:220px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;">
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+            <a href="?role=applicant&amp;page=saved-jobs" class="btn btn-outline btn-sm">Reset</a>
+        </form>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
             {{saved_job_list}}
         </div>

@@ -36,9 +36,9 @@ $applicants = $db->prepare("
 $recent_html = '<ul style="list-style:none;">';
 foreach ($applicants as $app) {
     $recent_html .= "<li style='padding:8px 0;border-bottom:1px solid #f1f5f9;'>
-        <a href='?role=employer&page=applicant-details&id={$app['id']}'>{$app['applicant_name']}</a> 
-        - {$app['job_title']} 
-        <span class='badge badge-pending'>" . time_ago($app['created_at']) . "</span>
+        <a href='?role=employer&page=applicant-details&id=" . (int)$app['id'] . "'>" . e($app['applicant_name']) . "</a>
+        - " . e($app['job_title']) . "
+        <span class='badge badge-pending'>" . e(time_ago($app['created_at'])) . "</span>
     </li>";
 }
 $recent_html .= '</ul>';
@@ -49,8 +49,8 @@ $job_list_html = '<ul style="list-style:none;">';
 foreach ($jobs as $job) {
     $apps = $db->prepare("SELECT COUNT(*) FROM applications WHERE job_id = ?")->execute([$job['id']])->fetchColumn();
     $job_list_html .= "<li style='padding:8px 0;border-bottom:1px solid #f1f5f9;'>
-        <a href='?role=employer&page=job-details&id={$job['id']}'>{$job['title']}</a> 
-        - {$apps} apps 
+        <a href='?role=employer&page=job-details&id=" . (int)$job['id'] . "'>" . e($job['title']) . "</a>
+        - " . (int)$apps . " apps
         <span class='badge badge-active'>Active</span>
     </li>";
 }
@@ -61,13 +61,16 @@ render('employer/dashboard.html', [
     'active_jobs' => $active_jobs,
     'total_applicants' => $total_applicants,
     'hires_this_year' => $hires,
-    'recent_applicants' => $recent_html,
-    'active_jobs_list' => $job_list_html
+    'recent_applicants' => new RawHtml($recent_html),
+    'active_jobs_list' => new RawHtml($job_list_html),
+    'notification' => new RawHtml(flash_message())
 ]);
 
 function time_ago($timestamp) {
     $diff = time() - strtotime($timestamp);
-    if ($diff < 60) return $diff . 's ago';
+    // A timestamp can land slightly ahead of "now" when the stored value was
+    // written under a different timezone, which used to render as "-12408s ago".
+    if ($diff < 60) return $diff < 0 ? 'just now' : $diff . 's ago';
     if ($diff < 3600) return floor($diff/60) . 'm ago';
     if ($diff < 86400) return floor($diff/3600) . 'h ago';
     return floor($diff/86400) . 'd ago';

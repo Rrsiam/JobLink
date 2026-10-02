@@ -3,43 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile – JobLink</title>
-    <link rel="stylesheet" href="public/css/global.css">
-    <link rel="stylesheet" href="public/css/applicant.css">
+    <title>My Profile &ndash; JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css?v=6">
+    <link rel="stylesheet" href="public/css/applicant.css?v=6">
 </head>
 <body>
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
-        <a href='?role=applicant&page=dashboard' class="logo">Job<span>Link</span></a>
+        <a href="?role=applicant&amp;page=dashboard" class="logo">Job<span>Link</span></a>
         <div class="user-info"><div class="name">{{name}}</div><div class="role">Applicant</div></div>
         <nav>
-            <a href="?role=applicant&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
-            <a href="?role=applicant&page=find-jobs" class="nav-item"><span class="icon">🔍</span><span>Find Jobs</span></a>
-            <a href="?role=applicant&page=saved-jobs" class="nav-item"><span class="icon">❤️</span><span>Saved Jobs</span></a>
-            <a href="?role=applicant&page=applications" class="nav-item"><span class="icon">📋</span><span>My Applications</span></a>
-            <a href="?role=applicant&page=resume" class="nav-item"><span class="icon">📄</span><span>Resume</span></a>
-            <a href="?role=applicant&page=profile" class="nav-item active"><span class="icon">👤</span><span>Profile</span></a>
-            <a href="?role=applicant&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+            <a href="?role=applicant&amp;page=dashboard" class="nav-item"><span class="icon">&#128202;</span><span>Dashboard</span></a>
+            <a href="?role=applicant&amp;page=find-jobs" class="nav-item"><span class="icon">&#128269;</span><span>Find Jobs</span></a>
+            <a href="?role=applicant&amp;page=saved-jobs" class="nav-item"><span class="icon">&hearts;</span><span>Saved Jobs</span></a>
+            <a href="?role=applicant&amp;page=applications" class="nav-item"><span class="icon">&#128203;</span><span>My Applications</span></a>
+            <a href="?role=applicant&amp;page=resume" class="nav-item"><span class="icon">&#128196;</span><span>Resume</span></a>
+            <a href="?role=applicant&amp;page=profile" class="nav-item active"><span class="icon">&#128100;</span><span>Profile</span></a>
+            <a href="?role=applicant&amp;page=settings" class="nav-item"><span class="icon">&#9881;</span><span>Settings</span></a>
         </nav>
-        <a href="?page=logout" class="logout">🚪 Logout</a>
+        <a href="?page=logout" class="logout">&#128682; Logout</a>
     </aside>
     <main class="dash-main">
         <div class="page-title">My Profile</div>
-        <div class="page-sub">Keep your profile updated to attract the best opportunities</div>
-        <div class="profile-card">
-            <div class="avatar">{{initial}}</div>
-            <h2>{{name}}</h2>
-            <p>{{email}} · {{location}} · {{phone}}</p>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>About</strong><br>{{about}}</div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>Education</strong><br>{{education}}</div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>Work Experience</strong><br>{{experience}}</div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>Skills</strong><br>{{skills}}</div>
-            <hr style="margin:16px 0;border-color:#e2e8f0;">
-            <div><strong>Certifications</strong><br>{{certifications}}</div>
+        <div class="page-sub">Keep your details updated so employers can reach you.</div>
+
+        {{notification}}
+        <div class="pf-page">
+        <section class="pf-hero">
+            <div class="pf-hero-cover"></div>
+            <div class="pf-hero-body">
+                <div class="pf-avatar">{{avatar}}</div>
+                <div class="pf-identity">
+                    <h1 class="pf-name">{{name}}</h1>
+                    <span class="pf-headline">{{headline}}</span>
+                    <div class="pf-contacts">{{contacts}}</div>
+                </div>
+                <div class="pf-hero-side">
+                    <div class="pf-ring" title="Profile {{completion}}% complete">
+                        <svg viewBox="0 0 100 100" aria-hidden="true">
+                            <circle class="pf-ring-track" cx="50" cy="50" r="40"></circle>
+                            <circle class="pf-ring-fill" cx="50" cy="50" r="40" data-percent="{{completion}}"></circle>
+                        </svg>
+                        <span class="pf-ring-label"><strong>{{completion}}%</strong><span>complete</span></span>
+                    </div>
+                    <div class="pf-hero-actions">
+                        <a href="?role=applicant&amp;page=edit-profile" class="btn btn-primary btn-sm">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="pf-grid">
+            <div class="pf-col-main">
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">&#128221;</span> About</h2>
+                        <a href="?role=applicant&amp;page=edit-profile" class="pf-card-link">Edit</a>
+                    </div>
+                    <div class="pf-body">{{about_html}}</div>
+                </section>
+
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">&#128188;</span> Work Experience</h2>
+                        <a href="?role=applicant&amp;page=edit-profile" class="pf-card-link">Edit</a>
+                    </div>
+                    <ul class="pf-list">{{experience_html}}</ul>
+                </section>
+
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">&#127891;</span> Education</h2>
+                        <a href="?role=applicant&amp;page=edit-profile" class="pf-card-link">Edit</a>
+                    </div>
+                    <ul class="pf-list">{{education_html}}</ul>
+                </section>
+            </div>
+
+            <div class="pf-col-side">
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">&#128736;</span> Skills</h2>
+                        <a href="?role=applicant&amp;page=edit-profile" class="pf-card-link">Edit</a>
+                    </div>
+                    <div class="pf-tags">{{skills_html}}</div>
+                </section>
+
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">&#128196;</span> Resume</h2>
+                        <a href="?role=applicant&amp;page=resume" class="pf-card-link">Edit</a>
+                    </div>
+                    <div class="resume-row" style="display:{{resume_show}};">
+                        <div class="resume-row-text">
+                            <strong>{{resume_file}}</strong>
+                            <span>{{resume_meta}}</span>
+                        </div>
+                        <div class="resume-row-actions">
+                            <a class="btn btn-primary btn-sm" href="?role=applicant&amp;page=resume-download">Download</a>
+                        </div>
+                    </div>
+                    <div class="resume-row" style="display:{{resume_empty_show}};">
+                        <div class="resume-row-text">
+                            <strong>No resume uploaded</strong>
+                            <span>Upload a PDF, DOC or DOCX to apply with one click.</span>
+                        </div>
+                        <div class="resume-row-actions">
+                            <a class="btn btn-primary btn-sm" href="?role=applicant&amp;page=resume">Upload Resume</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">&#127942;</span> Certifications</h2>
+                        <a href="?role=applicant&amp;page=edit-profile" class="pf-card-link">Edit</a>
+                    </div>
+                    <ul class="pf-list">{{certifications_html}}</ul>
+                </section>
+
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">&#127760;</span> Languages</h2>
+                        <a href="?role=applicant&amp;page=edit-profile" class="pf-card-link">Edit</a>
+                    </div>
+                    <div class="pf-tags">{{languages_html}}</div>
+                </section>
+            </div>
+        </div>
         </div>
     </main>
 </div>

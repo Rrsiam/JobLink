@@ -25,6 +25,7 @@
     <main class="dash-main">
         <div class="page-title">Post a Job</div>
         <div class="page-sub">Fill in the details below to attract the best candidates.</div>
+        {{notification}}
         <form class="dash-form" method="POST" action="?role=employer&page=post-job">
             <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
                 <h3>Basic Information</h3>
@@ -32,13 +33,19 @@
                     <div><label>Job Title</label><input type="text" name="job_title" placeholder="e.g. Senior Frontend Developer" required></div>
                     <div><label>Category</label><select name="category">{{category_options}}</select></div>
                 </div>
-                <div class="form-row">
-                    <div><label>Number of Vacancies</label><input type="number" name="vacancies" placeholder="e.g. 3"></div>
-                    <div><label>Location</label><input type="text" name="location" placeholder="e.g. Makati City, Metro Manila"></div>
+                <div class="form-row" style="grid-template-columns:1fr 1fr 1fr;">
+                    <div><label>Number of Vacancies</label><input type="number" name="vacancies" min="1" placeholder="e.g. 3" value="1"></div>
+                    <div><label>Location</label><input type="text" name="location" placeholder="e.g. Makati City, Metro Manila" required></div>
+                    <div><label>Job Type</label>
+                        <select name="job_type">{{job_type_options}}</select>
+                    </div>
                 </div>
                 <h3 style="margin:16px 0 12px;">Compensation &amp; Requirements</h3>
+                <div class="form-row" style="grid-template-columns:1fr 1fr;">
+                    <div><label>Minimum Salary (PHP / month)</label><input type="text" name="min_salary" placeholder="e.g. 25000"></div>
+                    <div><label>Maximum Salary (PHP / month)</label><input type="text" name="max_salary" placeholder="e.g. 40000"></div>
+                </div>
                 <div class="form-row">
-                    <div><label>Salary Range (PHP / month)</label><input type="text" name="salary" placeholder="Minimum to Maximum"></div>
                     <div><label>Minimum Education (optional)</label><input type="text" name="education" placeholder="e.g. Bachelor's Degree"></div>
                 </div>
                 <div class="form-row">
@@ -58,10 +65,10 @@
                 <textarea name="benefits" rows="3" placeholder="Competitive salary, Health insurance (HMO)..."></textarea>
                 <h3 style="margin:16px 0 12px;">Application Settings</h3>
                 <label>Application Deadline</label>
-                <input type="date" name="deadline">
+                <input type="date" name="deadline" value="{{default_deadline}}">
                 <div style="display:flex;gap:12px;margin-top:16px;">
-                    <button type="submit" class="btn btn-outline">Save Draft</button>
-                    <button type="submit" class="btn btn-primary" id="publish-job">Publish Job</button>
+                    <button type="submit" class="btn btn-outline" name="status" value="draft">Save Draft</button>
+                    <button type="submit" class="btn btn-primary" name="status" value="active" id="publish-job">Publish Job</button>
                 </div>
             </div>
         </form>

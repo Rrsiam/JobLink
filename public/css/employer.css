@@ -27,6 +27,102 @@ body { font-family:'Inter',system-ui,sans-serif; background:#f1f5f9; }
 .badge-closed { background:#fee2e2; color:#dc2626; }
 .badge-pending { background:#fef3c7; color:#d97706; }
 .dash-form label { display:block; font-weight:500; font-size:13px; margin-bottom:4px; color:#334155; }
-.dash-form input, .dash-form select, .dash-form textarea { width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:14px; margin-bottom:16px; font-family:inherit; }
+.dash-form input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), .dash-form select, .dash-form textarea { width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:14px; margin-bottom:16px; font-family:inherit; }
 .dash-form .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-@media (max-width:768px) { .dash-sidebar { width:60px; padding:16px 8px; } .dash-sidebar .logo, .dash-sidebar .user-info .name, .dash-sidebar .user-info .role, .dash-sidebar .nav-item span:not(.icon) { display:none; } .dash-sidebar .nav-item { justify-content:center; padding:10px; } .dash-main { padding:16px; } .dash-form .form-row { grid-template-columns:1fr; } }
+
+/* Logo picker: the label is the click target, the input stays focusable so the
+   control is reachable by keyboard. */
+.upload-zone { display:block; margin:0; padding:20px; text-align:center; cursor:pointer; border:2px dashed #e2e8f0; border-radius:8px; }
+.upload-zone:hover { border-color:#94a3b8; background:#f8fafc; }
+.upload-zone:focus-within { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.15); }
+.upload-zone-title { display:block; font-size:14px; font-weight:500; color:#0f172a; }
+.upload-zone-hint { display:block; font-size:12px; font-weight:400; color:#64748b; margin-top:3px; }
+.upload-file { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+.upload-name { font-size:12px; color:#64748b; min-height:16px; margin:0; }
+.dash-main .page-sub { color:#64748b; margin-bottom:24px; }
+.stat-card .label { font-size:13px; color:#64748b; margin-top:4px; }
+.badge-shortlisted { background:#dbeafe; color:#2563eb; }
+.badge-under-review { background:#fef3c7; color:#d97706; }
+.badge-rejected { background:#fee2e2; color:#dc2626; }
+.badge-hired { background:#dcfce7; color:#16a34a; }
+.danger-zone { border:1px solid #fee2e2; background:#fef2f2; padding:20px; border-radius:12px; margin-bottom:24px; }
+.danger-zone h4 { color:#dc2626; margin-bottom:8px; }
+
+
+/* Company profile — same language as the applicant profile: a cover hero over
+   a row of equal-height cards. */
+.cp-page { max-width:1080px; margin:0 auto; }
+.cp-hero { background:#fff; border:1px solid #e2e8f0; border-radius:18px; overflow:hidden; margin-bottom:20px; box-shadow:0 4px 20px rgba(15,23,42,0.06); }
+.cp-hero-cover { height:104px; background:linear-gradient(125deg,#0f766e 0%,#14b8a6 52%,#5eead4 100%); position:relative; }
+.cp-hero-cover::after { content:""; position:absolute; inset:0; background:radial-gradient(circle at 78% 20%,rgba(255,255,255,.3),transparent 55%); }
+.cp-hero-body { display:grid; grid-template-columns:96px minmax(0,1fr) auto; align-items:start; gap:0 24px; padding:0 28px 24px; }
+.cp-logo { width:96px; height:96px; margin-top:-40px; border-radius:20px; background:#fff; border:1px solid #e2e8f0; box-shadow:0 6px 18px rgba(15,23,42,.14); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; color:#0f766e; overflow:hidden; position:relative; }
+.cp-logo img { width:100%; height:100%; object-fit:contain; padding:6px; display:block; }
+.cp-identity { min-width:0; padding-top:18px; }
+.cp-name-row { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+.cp-name { font-size:26px; font-weight:700; color:#0f172a; line-height:1.2; letter-spacing:-.4px; min-width:0; overflow-wrap:anywhere; }
+.cp-verified { display:inline-flex; align-items:center; gap:5px; flex-shrink:0; font-size:11px; font-weight:700; color:#0f766e; background:#ccfbf1; border:1px solid #99f6e4; border-radius:20px; padding:3px 11px; }
+.cp-summary { font-size:14px; color:#64748b; margin-top:7px; }
+.cp-hero-actions { display:flex; flex-wrap:wrap; gap:8px; padding-top:20px; }
+
+/* About / Details / Contact sit side by side; About is prose, so it gets a
+   slightly wider track than the two list cards. */
+.cp-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr); gap:20px; align-items:start; }
+.cp-card { background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:22px 24px; margin-bottom:20px; box-shadow:0 2px 10px rgba(15,23,42,0.05); transition:box-shadow .2s, border-color .2s; }
+.cp-grid .cp-card { margin-bottom:0; height:100%; }
+.cp-card:last-child { margin-bottom:0; }
+.cp-card:hover { box-shadow:0 6px 22px rgba(15,23,42,0.09); border-color:#dbe3ec; }
+.cp-card-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; }
+.cp-card-title { display:flex; align-items:center; gap:9px; font-size:14px; font-weight:700; color:#0f172a; letter-spacing:.2px; text-transform:uppercase; min-width:0; }
+.cp-card-title .icon { width:28px; height:28px; border-radius:8px; background:#eff6ff; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.cp-card-link { flex-shrink:0; font-size:13px; font-weight:600; color:#2563eb; background:#eff6ff; border-radius:20px; padding:3px 12px; }
+.cp-card-link:hover { background:#dbeafe; }
+
+.cp-body { font-size:14px; color:#475569; line-height:1.75; max-width:68ch; }
+.cp-empty { display:inline-block; font-size:14px; color:#94a3b8; font-style:italic; background:#f8fafc; border:1px dashed #e2e8f0; border-radius:8px; padding:8px 12px; }
+.cp-void { color:#cbd5e1; }
+.cp-link { color:#2563eb; }
+.cp-link:hover { text-decoration:underline; }
+
+/* Single column: the cards are now narrower, so stacking the fields keeps long
+   values (addresses, emails) from wrapping awkwardly. */
+.cp-fields { display:grid; grid-template-columns:1fr; gap:14px; margin:0; }
+.cp-fields > div { min-width:0; display:flex; flex-direction:column; gap:3px; }
+.cp-fields dt { font-size:11px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:.4px; }
+.cp-fields dd { margin:0; font-size:14px; color:#0f172a; overflow-wrap:anywhere; }
+
+.cp-contacts { display:flex; flex-direction:column; }
+.cp-contact { display:flex; align-items:center; gap:11px; padding:9px 0; min-width:0; }
+.cp-contact + .cp-contact { border-top:1px solid #f1f5f9; }
+.cp-contact-icon { width:32px; height:32px; border-radius:9px; background:#f8fafc; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.cp-contact-body { display:flex; flex-direction:column; line-height:1.35; min-width:0; }
+.cp-contact-label { font-size:10px; color:#94a3b8; text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+.cp-contact-value { color:#334155; font-size:13.5px; overflow-wrap:anywhere; }
+
+/* Edit form: the same cards as the profile view, with two-column field rows. */
+.cp-form-row { display:grid; grid-template-columns:1fr 1fr; gap:0 20px; }
+.cp-form-full { grid-column:1 / -1; }
+.cp-form-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:2px; }
+.ec-logo { display:flex; align-items:flex-start; gap:18px; flex-wrap:wrap; }
+.ec-logo-preview { width:80px; height:80px; border-radius:16px; background:#f8fafc; border:1px solid #e2e8f0; box-shadow:0 2px 8px rgba(15,23,42,.05); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; color:#0f766e; overflow:hidden; flex-shrink:0; }
+.ec-logo-preview img { width:100%; height:100%; object-fit:contain; padding:5px; display:block; }
+.ec-logo-note { font-size:12.5px; color:#94a3b8; margin:8px 0 0; }
+
+@media (max-width:980px) {
+  .cp-grid { grid-template-columns:1fr; }
+}
+@media (max-width:768px) {
+  .dash-sidebar { width:60px; padding:16px 8px; }
+  .dash-sidebar .logo, .dash-sidebar .user-info .name, .dash-sidebar .user-info .role, .dash-sidebar .nav-item span:not(.icon) { display:none; }
+  .dash-sidebar .nav-item { justify-content:center; padding:10px; }
+  .dash-main { padding:16px; }
+  .dash-form .form-row { grid-template-columns:1fr; }
+  .cp-hero-body { grid-template-columns:1fr; gap:14px; padding:0 20px 22px; }
+  .cp-logo { width:88px; height:88px; margin:-44px auto 0; }
+  .cp-identity { padding-top:0; text-align:center; }
+  .cp-name-row { justify-content:center; }
+  .cp-hero-actions { justify-content:center; padding-top:0; }
+  .cp-card { padding:18px; }
+  .cp-fields, .cp-form-row { grid-template-columns:1fr; }
+}
+@media (prefers-reduced-motion:reduce) { .cp-card { transition:none; } }

@@ -31,8 +31,7 @@
             <input type="hidden" name="role" value="applicant">
             <input type="hidden" name="page" value="find-jobs">
             <div class="search-bar" style="margin:16px 0;">
-                <input type="text" name="search" value="{{search_value}}" placeholder="Job title, keywords, or company">
-                <input type="text" name="location" value="{{location_value}}" placeholder="City, state, or ZIP">
+                <input type="text" name="search" placeholder="Job title, keyword, skills, or company" value="{{search_value}}">
                 <button type="submit">Search Jobs</button>
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:16px;margin:16px 0;">
@@ -50,12 +49,24 @@
                             {{type_options}}
                         </select>
                     </div>
+                    <div style="margin-top:8px;">
+                        <label style="display:block;font-size:13px;font-weight:500;">Min Salary</label>
+                        <select name="min_salary" style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:6px;">
+                            {{salary_options}}
+                        </select>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <label style="display:block;font-size:13px;font-weight:500;">Experience</label>
+                        <select name="experience" style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:6px;">
+                            {{experience_options}}
+                        </select>
+                    </div>
                     <div style="margin-top:12px;">
                         <button type="submit" class="btn btn-primary btn-block">Apply Filters</button>
                     </div>
                 </div>
                 <div style="flex:1;">
-                    <div class="job-grid" style="grid-template-columns:1fr;">
+                    <div class="job-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));">
                         {{job_list}}
                     </div>
                     <div class="text-muted" style="margin-top:8px;">Showing {{showing}} of {{total}} jobs</div>

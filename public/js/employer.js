@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.action-shortlist').forEach(btn => {
-        btn.addEventListener('click', () => alert('Shortlisted (demo)'));
-    });
-    document.querySelectorAll('.action-reject').forEach(btn => {
-        btn.addEventListener('click', () => alert('Rejected (demo)'));
+    document.querySelectorAll('[data-confirm]').forEach(link => {
+        link.addEventListener('click', event => {
+            if (!window.confirm(link.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
     });
 });

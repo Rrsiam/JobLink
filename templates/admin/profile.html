@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile &ndash; JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css?v=6">
+    <link rel="stylesheet" href="public/css/applicant.css?v=6">
+    <link rel="stylesheet" href="public/css/admin.css?v=6">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href="?role=admin&page=dashboard" class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Admin</div></div>
+        <nav>
+            <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
+            <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
+            <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
+            <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=profile" class="nav-item active"><span class="icon">👤</span><span>Profile</span></a>
+            <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
+            <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
+            <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">My Profile</div>
+        <div class="page-sub">Your administrator details on JobLink.</div>
+        {{notification}}
+
+        <div class="pf-page">
+        <section class="pf-hero">
+            <div class="pf-hero-cover"></div>
+            <div class="pf-hero-body">
+                <div class="pf-avatar">{{avatar}}</div>
+                <div class="pf-identity">
+                    <h1 class="pf-name">{{name}}</h1>
+                    <span class="pf-headline">{{headline}}</span>
+                    <div class="pf-contacts">{{contacts}}</div>
+                </div>
+                <div class="pf-hero-side">
+                    <div class="pf-hero-actions">
+                        <a href="?role=admin&amp;page=edit-profile" class="btn btn-primary btn-sm">Edit Profile</a>
+                        <a href="?role=admin&page=settings" class="btn btn-outline btn-sm">Settings</a>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <div class="pf-grid">
+            <div class="pf-col-main">
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">🔒</span> Account</h2>
+                        <a href="?role=admin&amp;page=edit-profile" class="pf-card-link">Edit</a>
+                    </div>
+                    <ul class="pf-list">{{account_html}}</ul>
+                </section>
+            </div>
+
+            <div class="pf-col-side">
+                <section class="pf-card">
+                    <div class="pf-card-head">
+                        <h2 class="pf-card-title"><span class="icon">🛡️</span> Access</h2>
+                    </div>
+                    <ul class="pf-list">{{access_html}}</ul>
+                </section>
+            </div>
+        </div>
+        </div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/applicant.js"></script>
+</body>
+</html>

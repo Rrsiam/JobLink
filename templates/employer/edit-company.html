@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Company – JobLink</title>
     <link rel="stylesheet" href="public/css/global.css">
-    <link rel="stylesheet" href="public/css/employer.css">
+    <link rel="stylesheet" href="public/css/employer.css?v=7">
 </head>
 <body>
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
         <a href='?role=employer&page=dashboard' class="logo">Job<span>Link</span></a>
         <div class="user-info"><div class="name">{{company_name}}</div><div class="role">Employer</div></div>
-        <nav>
+        <nav aria-label="Employer">
             <a href="?role=employer&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
             <a href="?role=employer&page=company-profile" class="nav-item"><span class="icon">🏢</span><span>Company Profile</span></a>
             <a href="?role=employer&page=edit-company" class="nav-item active"><span class="icon">✏️</span><span>Edit Company</span></a>
@@ -24,63 +24,90 @@
         <a href="?page=logout" class="logout">🚪 Logout</a>
     </aside>
     <main class="dash-main">
-        <div class="page-title">Edit Company Profile</div>
-        <div class="page-sub">Update your company information and public profile</div>
-        <form class="dash-form" method="POST" action="?role=employer&page=edit-company" enctype="multipart/form-data">
-            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
-                <label>Upload Logo</label>
-                <div id="edit-logo-zone" style="border:2px dashed #e2e8f0;border-radius:8px;padding:20px;text-align:center;margin-bottom:16px;cursor:pointer;">
-                    Click to upload or drag and drop<br>
-                    <span class="text-muted" style="font-size:12px;">PNG, JPG or SVG. Max 2MB. Recommended: 256×256px</span>
-                    <input type="file" id="edit_logo" name="logo" style="display:none;" accept="image/png,image/jpeg,image/svg+xml">
-                </div>
-                <p id="edit-logo-filename" class="text-muted" style="font-size:12px;"></p>
-                <h3 style="margin:16px 0 12px;">Basic Information</h3>
-                <div class="form-row">
-                    <div><label>Company Name</label><input type="text" name="company_name" value="{{company_name}}"></div>
-                    <div><label>Tagline</label><input type="text" name="tagline" value="{{tagline}}"></div>
-                </div>
-                <div class="form-row">
-                    <div><label>Industry</label><input type="text" name="industry" value="{{industry}}"></div>
-                    <div><label>Company Size</label><input type="text" name="size" value="{{size}}"></div>
-                </div>
-                <div style="max-width:calc(50% - 6px);">
-                    <label>Headquarters Location</label><input type="text" name="location" value="{{location}}">
-                </div>
-                <h3 style="margin:16px 0 12px;">Contact Information</h3>
-                <div class="form-row">
-                    <div><label>Website</label><input type="url" name="website" value="{{website}}"></div>
-                    <div><label>Phone Number</label><input type="tel" name="phone" value="{{phone}}"></div>
-                </div>
-                <label>HR Email</label>
-                <input type="email" name="email" value="{{email}}">
-                <h3 style="margin:16px 0 12px;">About the Company</h3>
-                <label>Company Description</label>
-                <textarea name="about" rows="4">{{about}}</textarea>
-                <label>Benefits &amp; Perks (one per line)</label>
-                <textarea name="benefits" rows="4">{{benefits_raw}}</textarea>
-                <div style="display:flex;gap:12px;margin-top:16px;">
+        <div class="cp-page">
+            <h1 class="page-title">Edit Company Profile</h1>
+            <p class="page-sub">Update your company information and public profile</p>
+            {{flash}}
+
+            <form class="dash-form" method="POST" action="?role=employer&amp;page=edit-company" enctype="multipart/form-data">
+
+                <section class="cp-card">
+                    <div class="cp-card-head">
+                        <h2 class="cp-card-title"><span class="icon">&#127988;</span> Logo</h2>
+                        <a href="?role=employer&amp;page=company-profile" class="cp-card-link">View profile</a>
+                    </div>
+                    <div class="ec-logo">
+                        <div class="ec-logo-preview">{{logo}}</div>
+                        <div>
+                            <input type="file" id="edit_logo" name="logo" class="upload-file" accept="image/png,image/jpeg">
+                            <label class="upload-zone" for="edit_logo">
+                                <span class="upload-zone-title">Click to upload</span>
+                                <span class="upload-zone-hint">PNG or JPG. Max 2MB. Recommended: 256&times;256px</span>
+                            </label>
+                            <p class="upload-name" id="edit-logo-filename" role="status" aria-live="polite"></p>
+                            <p class="ec-logo-note">{{logo_note}}</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cp-card">
+                    <div class="cp-card-head">
+                        <h2 class="cp-card-title"><span class="icon">&#127970;</span> Basic Information</h2>
+                    </div>
+                    <div class="cp-form-row">
+                        <div><label for="company_name">Company Name</label><input type="text" id="company_name" name="company_name" value="{{company_name}}" maxlength="160" autocomplete="organization" required></div>
+                        <div><label for="industry">Industry</label><input type="text" id="industry" name="industry" value="{{industry}}" maxlength="120" placeholder="e.g. Software and IT Services"></div>
+                    </div>
+                    <div class="cp-form-row">
+                        <div><label for="size">Company Size</label><input type="text" id="size" name="size" value="{{size}}" maxlength="80" placeholder="e.g. 51-100 employees"></div>
+                        <div><label for="location">Headquarters Location</label><input type="text" id="location" name="location" value="{{location}}" maxlength="255"></div>
+                    </div>
+                </section>
+
+                <section class="cp-card">
+                    <div class="cp-card-head">
+                        <h2 class="cp-card-title"><span class="icon">&#128222;</span> Contact Information</h2>
+                    </div>
+                    <div class="cp-form-row">
+                        <div><label for="website">Website</label><input type="url" id="website" name="website" value="{{website}}" maxlength="180" placeholder="https://example.com"></div>
+                        <div><label for="phone">Phone Number</label><input type="tel" id="phone" name="phone" value="{{phone}}" maxlength="30"></div>
+                    </div>
+                    <div class="cp-form-row">
+                        <div class="cp-form-full"><label for="email">HR Email</label><input type="email" id="email" name="email" value="{{email}}" maxlength="150" autocomplete="email"></div>
+                    </div>
+                </section>
+
+                <section class="cp-card">
+                    <div class="cp-card-head">
+                        <h2 class="cp-card-title"><span class="icon">&#128221;</span> About the Company</h2>
+                    </div>
+                    <div class="cp-form-row">
+                        <div class="cp-form-full"><label for="about">Company Description</label><textarea id="about" name="about" rows="4" placeholder="What your company does, who you serve, and what you are looking for.">{{about}}</textarea></div>
+                    </div>
+                    <div class="cp-form-row">
+                        <div class="cp-form-full"><label for="benefits">Benefits &amp; Perks (one per line)</label><textarea id="benefits" name="benefits" rows="4">{{benefits}}</textarea></div>
+                    </div>
+                </section>
+
+                <div class="cp-form-actions">
                     <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a href="?role=employer&page=company-profile" class="btn btn-outline">Cancel</a>
+                    <a href="?role=employer&amp;page=company-profile" class="btn btn-outline">Cancel</a>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </main>
 </div>
 <script src="public/js/global.js"></script>
-    <script src="public/js/employer.js?v=2"></script>
-    <script>
-    (function(){
-        var zone = document.getElementById('edit-logo-zone');
-        var inp  = document.getElementById('edit_logo');
-        var lbl  = document.getElementById('edit-logo-filename');
-        if (zone && inp) {
-            zone.addEventListener('click', function(){ inp.click(); });
-            inp.addEventListener('change', function(){
-                if (lbl) lbl.textContent = inp.files[0] ? 'Selected: ' + inp.files[0].name : '';
-            });
-        }
-    })();
-    </script>
+<script src="public/js/employer.js?v=2"></script>
+<script>
+(function(){
+    var inp = document.getElementById('edit_logo');
+    var out = document.getElementById('edit-logo-filename');
+    if (!inp) return;
+    inp.addEventListener('change', function(){
+        if (out) out.textContent = inp.files && inp.files[0] ? 'Selected: ' + inp.files[0].name : '';
+    });
+})();
+</script>
 </body>
 </html>

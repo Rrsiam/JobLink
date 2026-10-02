@@ -11,13 +11,14 @@
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
         <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
-        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Admin</div></div>
         <nav>
             <a href="?role=admin&page=dashboard" class="nav-item active"><span class="icon">📊</span><span>Dashboard</span></a>
             <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
             <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
             <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
             <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
             <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
             <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
             <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
@@ -30,7 +31,6 @@
         <div class="stat-cards">
             <div class="stat-card"><div class="num">{{total_applicants}}</div><div class="label">Applicants</div></div>
             <div class="stat-card"><div class="num">{{total_employers}}</div><div class="label">Employers</div></div>
-            <div class="stat-card"><div class="num">{{total_admins}}</div><div class="label">Admins</div></div>
             <div class="stat-card"><div class="num">{{job_postings}}</div><div class="label">Job Postings</div></div>
             <div class="stat-card"><div class="num">{{total_applications}}</div><div class="label">Applications</div></div>
             <div class="stat-card"><div class="num">{{successful_hires}}</div><div class="label">Successful Hires</div></div>

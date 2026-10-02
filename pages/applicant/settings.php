@@ -19,20 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Password change
-    if (!empty($_POST['new_password'])) {
-        $user = get_user_data();
-        if (!password_verify($_POST['current_password'] ?? '', $user['password'])) {
-            $_SESSION['error'] = 'Current password is incorrect';
-        } elseif ($_POST['new_password'] !== $_POST['confirm_password']) {
-            $_SESSION['error'] = 'Passwords do not match';
-        } else {
-            $hashed = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
-            $db->prepare("UPDATE users SET password = ? WHERE id = ?")->execute([$hashed, $user_id]);
-            $_SESSION['success'] = 'Password updated successfully';
-        }
-    }
-    
+    // Password changes live on the Edit Profile page, not here.
+
     // Update notification settings
     if (isset($_POST['settings'])) {
         $s = $_POST['settings'];
@@ -56,13 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $user = get_user_data();
 $settings = $db->prepare("SELECT * FROM user_settings WHERE user_id = ?")->execute([$user_id])->fetch();
 
+// Only the sidebar needs the name here; account details are edited on Edit Profile.
 render('applicant/settings.html', [
-    'name' => $user['name'],
-    'email' => $user['email'],
-    'phone' => $user['phone'] ?: '',
+    'name' => new RawHtml(e($user['name'])),
     'notif_recommendations' => !empty($settings['job_recommendations']) ? 'checked' : '',
     'notif_status_updates' => !empty($settings['status_updates']) ? 'checked' : '',
     'notif_employer_messages' => !empty($settings['employer_messages']) ? 'checked' : '',
     'notif_weekly_summary' => !empty($settings['weekly_summary']) ? 'checked' : '',
-    'notification' => flash_message()
+    'notification' => new RawHtml(flash_message())
 ]);

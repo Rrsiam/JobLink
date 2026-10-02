@@ -57,7 +57,7 @@ foreach ($timeline as $item) {
     $is_current = $item['status'] === 'Shortlisted' && $app['status'] === 'shortlisted';
     $timeline_html .= "
     <div style='margin-top:12px;border-left:2px solid " . ($is_current ? '#2563eb' : '#94a3b8') . ";padding-left:16px;'>
-        <strong>{$item['status']}</strong> — {$item['description']}<br>
+        <strong>" . e($item['status']) . "</strong> — " . e($item['description']) . "<br>
         <span class='text-muted'>" . date('M d, Y', strtotime($item['date'])) . "</span>
     </div>";
 }
@@ -65,17 +65,22 @@ foreach ($timeline as $item) {
 $user = get_user_data();
 $profile = $db->prepare("SELECT resume FROM applicant_profiles WHERE user_id = ?")->execute([$user_id])->fetch();
 
-// Build resume download link
+// Build resume download link. The href goes through resume-download.php rather
+// than straight at the uploads/ path, because that directory is under the
+// document root and a direct link would serve the file without an auth check.
 $resume_display = 'No resume on file';
 $resume_button = "<a href='?role=applicant&page=resume' class='btn btn-outline btn-sm'>Upload Resume</a>";
 $has_resume = false;
+$resume_ref = '';
 if (!empty($app['resume_path'])) {
-    $resume_display = basename($app['resume_path']);
-    $resume_button = "<a href='" . htmlspecialchars($app['resume_path']) . "' class='btn btn-outline btn-sm' download>Download Resume</a>";
-    $has_resume = true;
+    $resume_ref = $app['resume_path'];
 } elseif (!empty($profile['resume'])) {
-    $resume_display = $profile['resume'];
-    $resume_button = "<a href='uploads/resumes/" . htmlspecialchars($profile['resume']) . "' class='btn btn-outline btn-sm' download>Download Resume</a>";
+    $resume_ref = 'uploads/resumes/' . $profile['resume'];
+}
+if ($resume_ref !== '' && resume_resolve_path($resume_ref) !== '') {
+    $resume_display = basename(str_replace('\\', '/', $resume_ref));
+    $resume_button = "<a href='?role=applicant&page=resume-download&amp;application_id=" . (int)$app['id']
+        . "' class='btn btn-outline btn-sm' download>Download Resume</a>";
     $has_resume = true;
 }
 
@@ -89,18 +94,19 @@ render('applicant/application-details.html', [
     'applied_date' => date('M d, Y', strtotime($app['created_at'])),
     'deadline' => date('M d, Y', strtotime($app['deadline'])),
     'status' => ucfirst($app['status']),
-    'status_class' => $app['status'],
+    'status_class' => strtolower(str_replace(' ', '-', $app['status'])),
     'under_review_date' => date('M d, Y', strtotime($app['created_at'] . ' + 2 days')),
     'shortlisted_date' => date('M d, Y', strtotime($app['created_at'] . ' + 5 days')),
     'email' => $user['email'],
     'phone' => $user['phone'] ?: 'Not provided',
-    'job_link' => '?role=applicant&page=job-details&id=' . $app['job_id'],
-    'resume_button' => $resume_button,
+    'job_link' => new RawHtml('?role=applicant&page=job-details&id=' . (int)$app['job_id']),
+    'resume_button' => new RawHtml($resume_button),
     'has_resume' => $has_resume ? 'true' : 'false',
     'resume_file' => $resume_display,
+    'resume_ext' => $has_resume ? strtoupper(pathinfo($resume_display, PATHINFO_EXTENSION)) : '',
     'withdraw_link' => '?role=applicant&page=application-details&id=' . $app_id . '&withdraw=1',
     'cover_letter' => $app['cover_letter'] ?: 'No cover letter provided.',
     'notes' => 'Your application is being reviewed.',
-    'notification' => flash_message(),
-    'timeline' => $timeline_html
+    'notification' => new RawHtml(flash_message()),
+    'timeline' => new RawHtml($timeline_html)
 ]);

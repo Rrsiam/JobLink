@@ -14,12 +14,30 @@ if ($action === 'sign-in' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch();
     
     if ($user && password_verify($password, $user['password'])) {
+        if ($user['status'] === 'pending') {
+            $_SESSION['error'] = 'Your account is pending admin approval. Please check back later.';
+            header('Location: ?page=sign-in');
+            exit;
+        }
+        if ($user['status'] === 'suspended' || $user['status'] === 'inactive') {
+            $_SESSION['error'] = 'Your account has been suspended. Please contact support.';
+            header('Location: ?page=sign-in');
+            exit;
+        }
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['role'] = $user['role'];
         $_SESSION['name'] = $user['name'];
         
-        // Redirect to dashboard
+        // Return the user to the page they came from, when it is a relative
+        // link and it matches the role they just signed in as.
         $role = $user['role'];
+        $next = safe_next_url($_POST['next'] ?? $_GET['next'] ?? '');
+        if ($next !== '' && strpos($next, 'role=' . $role) !== false) {
+            header('Location: ' . $next);
+            exit;
+        }
+
+        // Redirect to dashboard
         header("Location: ?role={$role}&page=dashboard");
         exit;
     } else {
@@ -31,6 +49,9 @@ if ($action === 'sign-in' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Handle registration (role selection)
 if ($action === 'sign-up' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Public sign-up only creates applicant or employer accounts.
+    // Admins are provisioned directly in the database, so anything else
+    // (including a hand-posted role=admin) is rejected.
     $role = $_POST['role'] ?? '';
     if ($role === 'applicant') {
         header('Location: ?page=create-applicant');
@@ -38,16 +59,10 @@ if ($action === 'sign-up' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($role === 'employer') {
         header('Location: ?page=create-employer');
         exit;
-    } elseif ($role === 'admin') {
-        // Admin creation should be restricted, but for demo we redirect
-        $_SESSION['error'] = 'Admin accounts are provisioned by the system administrator. Please sign in with an existing account.';
-        header('Location: ?page=sign-in');
-        exit;
-    } else {
-        $_SESSION['error'] = 'Please select an account type.';
-        header('Location: ?page=sign-up');
-        exit;
     }
+    $_SESSION['error'] = 'Please select an account type.';
+    header('Location: ?page=sign-up');
+    exit;
 }
 
 // Handle applicant registration
@@ -80,7 +95,40 @@ if ($action === 'create-applicant' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ?page=create-applicant');
         exit;
     }
-    
+
+    // Validate + store verification document (required for admin approval)
+    $doc_file = null;
+    if (empty($_FILES['verification_doc']['name'])) {
+        $_SESSION['error'] = 'Please upload an ID document (NID, passport, or driver\'s license) for verification.';
+        header('Location: ?page=create-applicant');
+        exit;
+    }
+    $allowed = ['application/pdf', 'image/png', 'image/jpeg'];
+    $exts = ['application/pdf' => 'pdf', 'image/png' => 'png', 'image/jpeg' => 'jpg'];
+    if ($_FILES['verification_doc']['error'] !== UPLOAD_ERR_OK) {
+        $_SESSION['error'] = 'Document upload failed with error code ' . $_FILES['verification_doc']['error'] . '.';
+        header('Location: ?page=create-applicant');
+        exit;
+    } elseif (!in_array($_FILES['verification_doc']['type'], $allowed)) {
+        $_SESSION['error'] = 'Document must be a PDF, PNG, or JPG file.';
+        header('Location: ?page=create-applicant');
+        exit;
+    } elseif ($_FILES['verification_doc']['size'] > 5 * 1024 * 1024) {
+        $_SESSION['error'] = 'Document must be 5 MB or smaller.';
+        header('Location: ?page=create-applicant');
+        exit;
+    }
+    $docs_dir = __DIR__ . '/uploads/documents';
+    if (!is_dir($docs_dir)) {
+        mkdir($docs_dir, 0777, true);
+    }
+    $doc_file = 'doc_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $exts[$_FILES['verification_doc']['type']];
+    if (!move_uploaded_file($_FILES['verification_doc']['tmp_name'], $docs_dir . '/' . $doc_file)) {
+        $_SESSION['error'] = 'Failed to save the uploaded document.';
+        header('Location: ?page=create-applicant');
+        exit;
+    }
+
     $db = getDB();
     
     // Check if email exists
@@ -97,13 +145,13 @@ if ($action === 'create-applicant' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Insert user
         $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $db->prepare("INSERT INTO users (name, email, phone, password, role, status) VALUES (?, ?, ?, ?, 'applicant', 'active')");
+        $stmt = $db->prepare("INSERT INTO users (name, email, phone, password, role, status) VALUES (?, ?, ?, ?, 'applicant', 'pending')");
         $stmt->execute([$name, $email, $phone, $hashed]);
         $user_id = $db->lastInsertId();
         
         // Insert applicant profile
-        $stmt = $db->prepare("INSERT INTO applicant_profiles (user_id, address, education, experience, skills) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$user_id, $address, $education, $experience, $skills]);
+        $stmt = $db->prepare("INSERT INTO applicant_profiles (user_id, address, education, experience, skills, verification_doc) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$user_id, $address, $education, $experience, $skills, $doc_file]);
         
         // Insert user settings
         $stmt = $db->prepare("INSERT INTO user_settings (user_id) VALUES (?)");
@@ -111,12 +159,9 @@ if ($action === 'create-applicant' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $db->commit();
         
-        // Auto-login
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['role'] = 'applicant';
-        $_SESSION['name'] = $name;
-        
-        header('Location: ?role=applicant&page=dashboard');
+        // Account requires admin approval before first login
+        $_SESSION['error'] = 'Your account has been created and is pending admin approval. You will be able to sign in once it is approved.';
+        header('Location: ?page=sign-in');
         exit;
     } catch (PDOException $e) {
         $db->rollBack();
@@ -236,7 +281,11 @@ if ($action === 'sign-in') {
         header("Location: ?role={$role}&page=dashboard");
         exit;
     }
-    render('guest/sign-in.html', ['error' => flash_message()]);
+    render('guest/sign-in.html', [
+        'error' => flash_message(),
+        'account_notice' => '',
+        'next' => safe_next_url($_GET['next'] ?? '')
+    ]);
     exit;
 }
 

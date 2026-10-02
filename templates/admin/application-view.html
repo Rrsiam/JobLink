@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application #{{app_id}} – JobLink</title>
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/admin.css">
+</head>
+<body>
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Admin</div></div>
+        <nav>
+            <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
+            <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
+            <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
+            <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
+            <a href="?role=admin&page=applications" class="nav-item active"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
+            <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
+            <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
+            <a href="?role=admin&page=settings" class="nav-item"><span class="icon">⚙️</span><span>Settings</span></a>
+        </nav>
+        <a href="?page=logout" class="logout">🚪 Logout</a>
+    </aside>
+    <main class="dash-main">
+        <div class="page-title">{{applicant_name}}</div>
+        <div class="page-sub"><a href="?role=admin&page=applications">&larr; Back to applications</a></div>
+        {{notification}}
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                    <strong style="font-size:20px;">{{applicant_name}}</strong><br>
+                    <span class="badge badge-{{status_class}}">{{status}}</span>
+                </div>
+                <div class="text-muted">
+                    Applied {{applied_date}}<br>
+                    Application #{{app_id}}
+                </div>
+            </div>
+            <hr style="margin:16px 0;border-color:#e2e8f0;">
+            <div class="form-row" style="grid-template-columns:1fr 1fr;">
+                <div><strong>Email</strong><br>{{applicant_email}}</div>
+                <div><strong>Phone</strong><br>{{applicant_phone}}</div>
+                <div><strong>Professional Title</strong><br>{{applicant_title}}</div>
+                <div><strong>Location</strong><br>{{applicant_location}}</div>
+                <div><strong>Job</strong><br>{{job_title}}</div>
+                <div><strong>Company</strong><br>{{company_name}}</div>
+            </div>
+            <h3 style="margin:16px 0 8px;">Skills</h3>
+            <p>{{applicant_skills}}</p>
+            <h3 style="margin:16px 0 8px;">Resume</h3>
+            <p>{{resume_link}}</p>
+            <h3 style="margin:16px 0 8px;">Moderate</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                {{status_buttons}}
+            </div>
+        </div>
+    </main>
+</div>
+<script src="public/js/global.js"></script>
+<script src="public/js/admin.js"></script>
+</body>
+</html>

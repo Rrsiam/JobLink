@@ -11,13 +11,14 @@
 <div class="dash-wrapper">
     <aside class="dash-sidebar">
         <a href='?role=admin&page=dashboard' class="logo">Job<span>Link</span></a>
-        <div class="user-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+        <div class="user-info"><div class="name">{{name}}</div><div class="role">Admin</div></div>
         <nav>
             <a href="?role=admin&page=dashboard" class="nav-item"><span class="icon">📊</span><span>Dashboard</span></a>
             <a href="?role=admin&page=applicants" class="nav-item"><span class="icon">👤</span><span>Applicants</span></a>
             <a href="?role=admin&page=employers" class="nav-item"><span class="icon">🏢</span><span>Employers</span></a>
             <a href="?role=admin&page=jobs" class="nav-item"><span class="icon">💼</span><span>Jobs</span></a>
             <a href="?role=admin&page=applications" class="nav-item"><span class="icon">📋</span><span>Applications</span></a>
+            <a href="?role=admin&page=profile" class="nav-item"><span class="icon">👤</span><span>Profile</span></a>
             <a href="?role=admin&page=categories" class="nav-item"><span class="icon">📂</span><span>Categories</span></a>
             <a href="?role=admin&page=reports" class="nav-item"><span class="icon">📈</span><span>Reports</span></a>
             <a href="?role=admin&page=settings" class="nav-item active"><span class="icon">⚙️</span><span>Settings</span></a>
@@ -29,22 +30,6 @@
         <div class="page-sub">Manage your account and system configuration</div>
         {{notification}}
         <form class="dash-form" method="POST" action="?role=admin&page=settings">
-            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
-                <h3>Profile Information</h3>
-                <div class="form-row">
-                    <div><label>Full Name</label><input type="text" value="{{name}}"></div>
-                    <div><label>Phone Number</label><input type="tel" value="{{phone}}"></div>
-                </div>
-                <div><label>Role</label><input type="text" value="Super Administrator" disabled></div>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
-                <h3>Change Password</h3>
-                <input type="password" name="current_password" placeholder="Current Password *">
-                <input type="password" name="new_password" placeholder="New Password">
-                <input type="password" name="confirm_password" placeholder="Confirm New Password">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
             <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
                 <h3>System Settings</h3>
                 <label>Site Name</label>

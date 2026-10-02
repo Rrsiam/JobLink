@@ -13,7 +13,6 @@
             <a href="?page=home" class="logo">Job<span>Link</span></a>
             <nav class="nav-links">
                 <a href="?page=find-jobs">Find Jobs</a>
-                <a href="?page=companies">Companies</a>
                 <a href="?page=about">About</a>
                 <a href="?page=sign-in" class="btn btn-outline btn-sm">Log In</a>
                 <a href="?page=sign-up" class="btn btn-primary btn-sm">Register</a>
@@ -40,7 +39,7 @@
                     <div class="section"><h3>About {{company_name}}</h3><p>{{about_text}}</p></div>
                     <div class="section"><h3>Perks &amp; Benefits</h3><ul>{{benefits}}</ul></div>
                     <div class="section"><h3>Open Positions</h3>
-                        <div class="job-grid" style="grid-template-columns:1fr 1fr;">{{open_jobs}}</div>
+                        <div class="job-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));margin-bottom:8px;">{{open_jobs}}</div>
                     </div>
                 </div>
             </section>
@@ -49,10 +48,10 @@
     <footer class="guest-footer">
         <div class="container">
             <div><h4>JobLink</h4><p style="font-size:13px;color:#94a3b8;">Connecting local talent with local opportunity.</p></div>
-            <div><h4>For Job Seekers</h4><a href="#">Browse Jobs</a><a href="#">Create Resume</a><a href="#">Career Advice</a></div>
-            <div><h4>For Employers</h4><a href="#">Post a Job</a><a href="#">Search Candidates</a><a href="#">Pricing</a></div>
-            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="#">Blog</a><a href="#">Contact</a></div>
-            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+            <div><h4>For Job Seekers</h4><a href="?page=find-jobs">Browse Jobs</a><a href="?page=create-applicant">Create Resume</a><a href="?page=sign-in">Sign In</a></div>
+            <div><h4>For Employers</h4><a href="?page=create-employer">Post a Job</a><a href="?page=sign-in">Sign In</a></div>
+            <div><h4>Company</h4><a href="?page=about">About Us</a><a href="?page=find-jobs">Browse Jobs</a></div>
+            <div class="bottom"><span>&copy; 2025 JobLink, Inc.</span><span>Privacy · Terms</span></div>
         </div>
     </footer>
     <script src="public/js/global.js"></script>
